@@ -21,7 +21,7 @@ typedef union Vector3D
 	//
 	Vector3D(float x, float y, float z);
 
-	/* Assignment operators */
+	/* Assignment Operators */
 
 	//
 	Vector3D& operator=(const Vector3D& rhs);
@@ -38,12 +38,12 @@ typedef union Vector3D
 	//
 	Vector3D& operator/=(float rhs);
 
-	/* Unary operators */
+	/* Unary Operators */
 
 	//
 	Vector3D operator-() const;
 
-	/* Comparison operators*/
+	/* Comparison Operators */
 
 	//
 	bool operator==(const Vector3D& rhs) const;
@@ -59,7 +59,7 @@ typedef union Vector3D
 	//
 	void Swap(Vector3D& rhs);
 
-}Vector3D, Vec3, Point3D, Pt3;
+} Vector3D, Vec3, Point3D, Pt3;
 
 //
 Vector3D operator+(const Vector3D& lhs, const Vector3D& rhs);

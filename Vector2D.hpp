@@ -21,7 +21,7 @@ typedef union Vector2D
 	//
 	Vector2D(float x, float y);
 
-	/* Assignment operators */
+	/* Assignment Operators */
 
 	//
 	Vector2D& operator=(const Vector2D& rhs);
@@ -38,12 +38,12 @@ typedef union Vector2D
 	//
 	Vector2D& operator/=(float rhs);
 
-	/* Unary operators */
+	/* Unary Operators */
 
 	//
 	Vector2D operator-() const;
 
-	/* Comparison operators*/
+	/* Comparison Operators */
 
 	//
 	bool operator==(const Vector2D& rhs) const;
