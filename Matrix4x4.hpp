@@ -5,6 +5,10 @@
 
 #include "Vector3D.hpp"
 
+extern Vector3D e1;
+extern Vector3D e2;
+extern Vector3D e3;
+
 //
 typedef union Matrix4x4
 {
@@ -81,7 +85,10 @@ Matrix4x4 Mtx44Translate(Matrix4x4& result, float x, float y, float z);
 Matrix4x4 Mtx44Scale(Matrix4x4& result, float x, float y, float z);
 
 //
-// rotation matrices (radians & degrees)
+Matrix4x4 Mtx44RotRad(Matrix4x4& result, const Matrix4x4& mtx, Vector3D axis, float radians);
+
+//
+Matrix4x4 Mtx44RotDeg(Matrix4x4& result, const Matrix4x4& mtx, Vector3D axis, float degrees);
 
 //
 Matrix4x4 Mtx44Transpose(Matrix4x4& result, const Matrix4x4& mtx);

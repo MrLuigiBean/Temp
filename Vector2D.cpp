@@ -37,6 +37,14 @@ Vector2D Vector2D::operator-() const
 { return { x * -1, y * -1 }; }
 
 //
+bool Vector2D::operator==(const Vector2D& rhs) const
+{
+	return
+		-EPSILON <= x - rhs.x && x - rhs.x <= EPSILON &&
+		-EPSILON <= y - rhs.y && y - rhs.y <= EPSILON;
+}
+
+//
 float Vector2D::Length() const
 { return sqrtf(LengthSq()); }
 

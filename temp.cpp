@@ -18,25 +18,34 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <string>
 #include <cstring> // memset
 
-#include "Vector3D.hpp"
 #include "Matrix3x3.hpp"
-#include "Vector2D.hpp"
+#include "Matrix4x4.hpp"
 
 #define EPSILON		0.0001f
 #define PI			3.14159265358f
 
 //
-void PrintVector(char const* txt, const Vec2& pVec0)
+template <typename T>
+void PrintVector(char const* txt, T const& vec)
 {
-	printf("%s:\t%f, %f\n", txt, pVec0.x, pVec0.y);
+	printf("%s:\t", txt);
+	for (size_t i{ 0 }, sz{ std::size(vec.m) }; i < sz; ++i)
+	{
+		printf("%f", vec.m[i]);
+		printf("%s", i != sz - 1 ? ", " : "\n");
+	}
 }
 
-void PrintMtx33(char const* pString, const Mtx33& pMtx)
+//
+template <typename T>
+void PrintMatrix(char const* txt, T const& mtx)
 {
-	printf("%s:\n", pString);
-	printf("%8.5f %8.5f %8.5f\n", pMtx.m00, pMtx.m01, pMtx.m02);
-	printf("%8.5f %8.5f %8.5f\n", pMtx.m10, pMtx.m11, pMtx.m12);
-	printf("%8.5f %8.5f %8.5f\n", pMtx.m20, pMtx.m21, pMtx.m22);
+	printf("%s:\n", txt);
+	for (size_t i{ 0 }, sz{ std::size(mtx.m2) }; i < std::size(mtx.m); ++i)
+	{
+		printf("%f", mtx.m[i]);
+		printf("%s", i % sz != sz - 1 ? ", " : "\n");
+	}
 }
 
 float CompareMtx33(const Mtx33& pSrc, const Mtx33& pDst)
@@ -412,18 +421,27 @@ int testmain()
 
 int main()
 {
-	float input[] = { 4, 5, 8,
-									3, 8, 9,
-										4, 6, 6 };
+	float input[] =
+	{
+		4, 5, 8,
+		3, 8, 9,
+		4, 6, 6
+	};
+
+	//float input4[] =
+	//{
+	//	4, 5, 8, 1,
+	//	3, 8, 9, 1,
+	//	4, 6, 6, 1,
+	//	0, 0, 0, 1
+	//};
 	const Matrix3x3 source{ input };
 	Matrix3x3 inv;
 	float det;
-	PrintMtx33("source", source);
-	//printf("det %f\n", Determinant(source));
-	PrintMtx33("inverse", Mtx33Inverse(&inv, &det, source));
+	PrintMatrix("source", source);
+	printf("det %f\n", source.Determinant());
+	PrintMatrix("inverse", Mtx33Inverse(&inv, &det, source));
 
-	Vector3D eh{1, 1, 1}, x{0, 0, 1};
-	printf("3d len: %f\n", Vector3DCrossProductMag(eh, x));
 	// testmain();
 	return 0;
 }

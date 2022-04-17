@@ -43,6 +43,11 @@ typedef union Vector2D
 	//
 	Vector2D operator-() const;
 
+	/* Comparison operators*/
+
+	//
+	bool operator==(const Vector2D& rhs) const;
+
 	/* Others */
 
 	//

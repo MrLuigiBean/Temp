@@ -5,6 +5,10 @@
 
 static const size_t sz = 4; // # of dimensions of matrix
 
+Vector3D e1{ 1, 0, 0 };
+Vector3D e2{ 0, 1, 0 };
+Vector3D e3{ 0, 0, 1 };
+
 //
 Matrix4x4::Matrix4x4(const float* pArr)
 {
@@ -105,8 +109,29 @@ Matrix4x4 Mtx44Scale(Matrix4x4& result, const float x, const float y, const floa
 }
 
 //
-// rotation matrices (radians & degrees)
+Matrix4x4 Mtx44RotRad(Matrix4x4& result, const Matrix4x4& mtx, const Vector3D axis, const float radians)
+{
+	if (axis == e1)
+	{
+		printf("we're here 1st!\n");
+		return {};
+	}
+	if (axis == e2)
+	{
+		printf("we're here 2nd!\n");
+		return {};
+	}
+	if (axis == e3)
+	{
+		printf("we're here 3rd!\n");
+		return {};
+	}
+	return result;
+}
 
+//
+Matrix4x4 Mtx44RotDeg(Matrix4x4& result, const Matrix4x4& mtx, const Vector3D axis, const float degrees)
+{ return Mtx44RotRad(result, mtx, axis, static_cast<float>(degrees / 180.0f * M_PI)); }
 //
 Matrix4x4 Mtx44Transpose(Matrix4x4& result, const Matrix4x4& mtx)
 {

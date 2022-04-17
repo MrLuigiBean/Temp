@@ -43,6 +43,11 @@ typedef union Vector3D
 	//
 	Vector3D operator-() const;
 
+	/* Comparison operators*/
+
+	//
+	bool operator==(const Vector3D& rhs) const;
+
 	/* Others */
 
 	//

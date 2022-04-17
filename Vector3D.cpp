@@ -38,6 +38,15 @@ Vector3D Vector3D::operator-() const
 { return { x * -1, y * -1, z * -1 }; }
 
 //
+bool Vector3D::operator==(const Vector3D & rhs) const
+{
+	return
+		-EPSILON <= x - rhs.x && x - rhs.x <= EPSILON &&
+		-EPSILON <= y - rhs.y && y - rhs.y <= EPSILON &&
+		-EPSILON <= z - rhs.z && z - rhs.z <= EPSILON;
+}
+
+//
 float Vector3D::Length() const
 { return sqrtf(LengthSq()); }
 
