@@ -5,9 +5,9 @@
 
 static const size_t sz = 4; // # of dimensions of matrix
 
-Vector3D e1{ 1, 0, 0 };
-Vector3D e2{ 0, 1, 0 };
-Vector3D e3{ 0, 0, 1 };
+const Vector3D e1{ 1, 0, 0 };
+const Vector3D e2{ 0, 1, 0 };
+const Vector3D e3{ 0, 0, 1 };
 
 //
 Matrix4x4::Matrix4x4(const float* pArr)
@@ -109,29 +109,38 @@ Matrix4x4 Mtx44Scale(Matrix4x4& result, const float x, const float y, const floa
 }
 
 //
-Matrix4x4 Mtx44RotRad(Matrix4x4& result, const Matrix4x4& mtx, const Vector3D axis, const float radians)
+Matrix4x4 Mtx44RotRad(Matrix4x4& result, const Vector3D axis, const float radians)
 {
 	if (axis == e1)
 	{
-		printf("we're here 1st!\n");
-		return {};
+		Mtx44Identity(result);
+		result.m11 = result.m22 = cosf(radians);
+		result.m21 = sinf(radians);
+		result.m12 = -result.m21;
+		return result;
 	}
 	if (axis == e2)
 	{
-		printf("we're here 2nd!\n");
-		return {};
+		Mtx44Identity(result);
+		result.m00 = result.m22 = cosf(radians);
+		result.m02 = sinf(radians);
+		result.m20 = -result.m02;
+		return result;
 	}
 	if (axis == e3)
 	{
-		printf("we're here 3rd!\n");
-		return {};
+		Mtx44Identity(result);
+		result.m00 = result.m11 = cosf(radians);
+		result.m10 = sinf(radians);
+		result.m01 = -result.m10;
+		return result;
 	}
 	return result;
 }
 
 //
-Matrix4x4 Mtx44RotDeg(Matrix4x4& result, const Matrix4x4& mtx, const Vector3D axis, const float degrees)
-{ return Mtx44RotRad(result, mtx, axis, static_cast<float>(degrees / 180.0f * M_PI)); }
+Matrix4x4 Mtx44RotDeg(Matrix4x4& result, const Vector3D axis, const float degrees)
+{ return Mtx44RotRad(result, axis, static_cast<float>(degrees / 180.0f * M_PI)); }
 //
 Matrix4x4 Mtx44Transpose(Matrix4x4& result, const Matrix4x4& mtx)
 {

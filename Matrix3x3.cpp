@@ -149,8 +149,8 @@ Matrix3x3 Mtx33RotRad(Matrix3x3& result, const float radians)
 {
 	Mtx33Identity(result);
 	result.m00 = result.m11 = cosf(radians);
-	result.m01 = sinf(radians);
-	result.m10 = -result.m01;
+	result.m10 = sinf(radians);
+	result.m01 = -result.m10;
 	return result;
 }
 
