@@ -66,7 +66,7 @@ float CompareVec2(const Vec2& pSrc, const Vec2& pDst)
 	d += fabsf(pSrc.y - pDst.y);
 
 	return d;
-};
+}
 
 int testmain()
 {

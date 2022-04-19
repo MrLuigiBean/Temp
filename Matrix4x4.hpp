@@ -5,9 +5,9 @@
 
 #include "Vector3D.hpp"
 
-extern const Vector3D e1;
-extern const Vector3D e2;
-extern const Vector3D e3;
+extern const Vector3D e1; // {1, 0, 0}
+extern const Vector3D e2; // {0, 1, 0}
+extern const Vector3D e3; // {0, 0, 1}
 
 //
 typedef union Matrix4x4
@@ -28,7 +28,7 @@ typedef union Matrix4x4
 	/* Constructors */
 
 	//
-	Matrix4x4() = default;
+	Matrix4x4() = default; // all values initialized to 0.0f
 
 	//
 	explicit Matrix4x4(const float* pArr);
@@ -75,8 +75,10 @@ Matrix4x4 operator*(const Matrix4x4& lhs, const Matrix4x4& rhs);
 //
 Vector3D operator*(const Matrix4x4& pMtx, const Vector3D& rhs);
 
+/* Alpha Engine Style */
+
 //
-Matrix4x4 Mtx44Identity(Matrix4x4& result);
+Matrix4x4& Mtx44Identity(Matrix4x4& result);
 
 //
 Matrix4x4 Mtx44Translate(Matrix4x4& result, float x, float y, float z);

@@ -78,7 +78,7 @@ Matrix4x4 operator*(const Matrix4x4& lhs, const Matrix4x4& rhs) { return {}; }
 Vector3D operator*(const Matrix4x4& pMtx, const Vector3D& rhs) { return {}; }
 
 //
-Matrix4x4 Mtx44Identity(Matrix4x4& result)
+Matrix4x4& Mtx44Identity(Matrix4x4& result)
 {
 	for (size_t i = 0; i < sz; ++i)
 	{
@@ -111,6 +111,9 @@ Matrix4x4 Mtx44Scale(Matrix4x4& result, const float x, const float y, const floa
 //
 Matrix4x4 Mtx44RotRad(Matrix4x4& result, const Vector3D axis, const float radians)
 {
+	// e1 rotation
+	if (axis == -e1)
+	{ return Mtx44RotRad(result, e1, -radians); }
 	if (axis == e1)
 	{
 		Mtx44Identity(result);
@@ -119,6 +122,10 @@ Matrix4x4 Mtx44RotRad(Matrix4x4& result, const Vector3D axis, const float radian
 		result.m12 = -result.m21;
 		return result;
 	}
+
+	// e2 rotation
+	if (axis == -e2)
+	{ return Mtx44RotRad(result, e2, -radians); }
 	if (axis == e2)
 	{
 		Mtx44Identity(result);
@@ -127,6 +134,10 @@ Matrix4x4 Mtx44RotRad(Matrix4x4& result, const Vector3D axis, const float radian
 		result.m20 = -result.m02;
 		return result;
 	}
+
+	// e3 rotation
+	if (axis == -e3)
+	{ return Mtx44RotRad(result, e3, -radians); }
 	if (axis == e3)
 	{
 		Mtx44Identity(result);
@@ -135,6 +146,9 @@ Matrix4x4 Mtx44RotRad(Matrix4x4& result, const Vector3D axis, const float radian
 		result.m01 = -result.m10;
 		return result;
 	}
+
+	// general rotation
+	;
 	return result;
 }
 
