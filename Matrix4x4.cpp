@@ -106,9 +106,7 @@ Vector3D operator*(const Matrix4x4& mtx, const Vector3D& rhs)
 
 	// translation
 	for (size_t i = 0; i < n; ++i)
-	{
-		result.m[i] += mtx.m[i * sz + (sz - 1)];
-	}
+	{ result.m[i] += mtx.m[i * sz + (sz - 1)]; }
 	return result;
 }
 

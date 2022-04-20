@@ -28,8 +28,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 template <typename T>
 void PrintVector(char const* txt, T const& vec)
 {
-	if (*txt != '\0') // don't print if there's nothing to print
-	{ printf("%s:\n", txt); }
+	// don't print if there's nothing to print
+	if (*txt != '\0') { printf("%s:\n", txt); }
 	for (size_t i{ 0 }, sz{ std::size(vec.m) }; i < sz; ++i)
 	{
 		printf("|% f", vec.m[i]);
@@ -41,8 +41,8 @@ void PrintVector(char const* txt, T const& vec)
 template <typename T>
 void PrintMatrix(char const* txt, T const& mtx)
 {
-	if (*txt != '\0') // don't print if there's nothing to print
-	{ printf("%s:\n", txt); 	}
+	// don't print if there's nothing to print
+	if (*txt != '\0') { printf("%s:\n", txt); }
 	for (size_t i{ 0 }, sz{ std::size(mtx.m2) }; i < std::size(mtx.m); ++i)
 	{
 		printf("|% f", mtx.m[i]);
