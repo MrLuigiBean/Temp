@@ -73,12 +73,10 @@ Matrix4x4 operator-(const Matrix4x4& lhs, const Matrix4x4& rhs);
 Matrix4x4 operator*(const Matrix4x4& lhs, const Matrix4x4& rhs);
 
 //
-Vector3D operator*(const Matrix4x4& pMtx, const Vector3D& rhs);
-
-/* Alpha Engine Style */
+Vector3D operator*(const Matrix4x4& mtx, const Vector3D& rhs);
 
 //
-Matrix4x4& Mtx44Identity(Matrix4x4& result);
+Matrix4x4 Mtx44Identity(Matrix4x4& result);
 
 //
 Matrix4x4 Mtx44Translate(Matrix4x4& result, float x, float y, float z);

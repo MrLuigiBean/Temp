@@ -28,7 +28,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 template <typename T>
 void PrintVector(char const* txt, T const& vec)
 {
-	printf("%s:\n", txt);
+	if (*txt != '\0') // don't print if there's nothing to print
+	{ printf("%s:\n", txt); }
 	for (size_t i{ 0 }, sz{ std::size(vec.m) }; i < sz; ++i)
 	{
 		printf("|% f", vec.m[i]);
@@ -40,7 +41,8 @@ void PrintVector(char const* txt, T const& vec)
 template <typename T>
 void PrintMatrix(char const* txt, T const& mtx)
 {
-	printf("%s:\n", txt);
+	if (*txt != '\0') // don't print if there's nothing to print
+	{ printf("%s:\n", txt); 	}
 	for (size_t i{ 0 }, sz{ std::size(mtx.m2) }; i < std::size(mtx.m); ++i)
 	{
 		printf("|% f", mtx.m[i]);
@@ -428,6 +430,8 @@ int main()
 		4, 6, 6
 	};
 
+	float input2[9] = { 0 };
+
 	//float input4[] =
 	//{
 	//	4, 5, 8, 1,
@@ -435,11 +439,12 @@ int main()
 	//	4, 6, 6, 1,
 	//	0, 0, 0, 1
 	//};
+
 	const Matrix3x3 source{ input };
 	Matrix3x3 inv;
 	float det;
 	PrintMatrix("source", source);
-	printf("det %f\n", source.Determinant());
+	printf("det %f\n", static_cast<double>(source.Determinant()));
 	PrintMatrix("inverse", Mtx33Inverse(&inv, &det, source));
 
 	// testmain();

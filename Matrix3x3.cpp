@@ -3,6 +3,7 @@
 #include <algorithm> // std::swap()
 #include <corecrt_math_defines.h> // M_PI
 
+constexpr float EPSILON = 0.0001f;
 static const size_t sz = 3; // # of dimensions of matrix
 
 //
@@ -175,10 +176,10 @@ Matrix3x3 Mtx33Inverse(Matrix3x3* result, float* determinant, const Matrix3x3& m
 {
 	*determinant = mtx.Determinant();
 
-	if (!*determinant)
+	if (-EPSILON <= *determinant && *determinant <= EPSILON)
 	{
 		result = nullptr;
-		return {};
+		throw("Determinant = 0 in Mtx33Inverse()");
 	}
 
 	Mtx33 adjoint, adjointTranspose;

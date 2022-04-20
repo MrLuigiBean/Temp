@@ -50,6 +50,12 @@ Matrix4x4& Matrix4x4::operator*=(const Matrix4x4& rhs)
 { return *this = *this * rhs; }
 
 //
+float Matrix4x4::Determinant() const
+{
+	return 0;
+}
+
+//
 void Matrix4x4::Swap(Matrix4x4& rhs)
 { std::swap((*this).m, rhs.m); }
 
@@ -72,13 +78,42 @@ Matrix4x4 operator-(const Matrix4x4& lhs, const Matrix4x4& rhs)
 }
 
 //
-Matrix4x4 operator*(const Matrix4x4& lhs, const Matrix4x4& rhs) { return {}; }
+Matrix4x4 operator*(const Matrix4x4& lhs, const Matrix4x4& rhs)
+{
+	float zeros[sz * sz] = { 0 };
+	Matrix4x4 result(zeros);
+
+	for (size_t i = 0; i < sz * sz; ++i)
+	{
+		for (size_t j = 0; j < sz; ++j)
+		{ result.m[i] += lhs.m[(i / sz) * sz + j] * rhs.m[j * sz + i % sz]; }
+	}
+	return result;
+}
 
 //
-Vector3D operator*(const Matrix4x4& pMtx, const Vector3D& rhs) { return {}; }
+Vector3D operator*(const Matrix4x4& mtx, const Vector3D& rhs)
+{
+	const size_t n = 3; // # of dimensions of vector
+	Vector3D result(0, 0, 0);
+
+	// applying effect of upper-left 3x3 submatrix of mtx
+	for (size_t i = 0; i < n; ++i)
+	{
+		for (size_t j = 0; j < n; ++j)
+		{ result.m[i] += mtx.m[i * sz + j] * rhs.m[j]; }
+	}
+
+	// translation
+	for (size_t i = 0; i < n; ++i)
+	{
+		result.m[i] += mtx.m[i * sz + (sz - 1)];
+	}
+	return result;
+}
 
 //
-Matrix4x4& Mtx44Identity(Matrix4x4& result)
+Matrix4x4 Mtx44Identity(Matrix4x4& result)
 {
 	for (size_t i = 0; i < sz; ++i)
 	{
@@ -148,13 +183,22 @@ Matrix4x4 Mtx44RotRad(Matrix4x4& result, const Vector3D axis, const float radian
 	}
 
 	// general rotation
-	;
-	return result;
+	const float a = axis.x, b = axis.y, c = axis.z;
+	const float alpha = sinf(radians), beta = cosf(radians), gamma = 1 - beta;
+	const Matrix4x4 rotation
+	{
+		gamma * a * a + beta, gamma * a * b - c * alpha, gamma * a * c + b * alpha, 0,
+		gamma * a * b + c * alpha, gamma * b * b + beta, gamma * b * c - a * alpha, 0,
+		gamma * a * c - b * alpha, gamma * b * c + a * alpha, gamma * c * c + beta, 0,
+		0, 0, 0, 1
+	};
+	return result = rotation;
 }
 
 //
 Matrix4x4 Mtx44RotDeg(Matrix4x4& result, const Vector3D axis, const float degrees)
 { return Mtx44RotRad(result, axis, static_cast<float>(degrees / 180.0f * M_PI)); }
+
 //
 Matrix4x4 Mtx44Transpose(Matrix4x4& result, const Matrix4x4& mtx)
 {
