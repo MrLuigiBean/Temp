@@ -87,7 +87,7 @@ Vector3D Vector3DNormalize(const Vector3D& vec)
 {
 	const float magnitude = vec.Length();
 	if (-EPSILON <= magnitude && magnitude <= EPSILON)
-	{ throw "Division by 0 in Vector3DNormalize()"; 	}
+	{ throw "Division by 0 in Vector3DNormalize()"; }
 	return { vec.x / magnitude, vec.y / magnitude, vec.z / magnitude };
 }
 

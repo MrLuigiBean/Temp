@@ -88,7 +88,7 @@ Matrix3x3 Mtx33RotRad(Matrix3x3& result, float radians);
 Matrix3x3 Mtx33RotDeg(Matrix3x3& result, float degrees);
 
 //
-Matrix3x3 Mtx33Shear(Matrix3x3& result, const Vector2D& axis);
+Matrix3x3 Mtx33Shear(Matrix3x3& result, const Vector2D& shear);
 
 //
 Matrix3x3 Mtx33Proj(Matrix3x3& result, const Vector2D& axis);

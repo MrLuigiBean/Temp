@@ -3,6 +3,7 @@
 #include <algorithm> // std::swap()
 #include <corecrt_math_defines.h> // M_PI
 
+constexpr float EPSILON = 0.0001f;
 static const size_t sz = 4; // # of dimensions of matrix
 
 const Vector3D e1_3D{ 1, 0, 0 };
@@ -183,19 +184,56 @@ Matrix4x4 Mtx44RotRad(Matrix4x4& result, const Vector3D axis, const float radian
 	// general rotation
 	const float a = axis.x, b = axis.y, c = axis.z;
 	const float alpha = sinf(radians), beta = cosf(radians), gamma = 1 - beta;
-	const Matrix4x4 rotation
+	const Matrix4x4 rotMtx
 	{
 		gamma * a * a + beta, gamma * a * b - c * alpha, gamma * a * c + b * alpha, 0,
 		gamma * a * b + c * alpha, gamma * b * b + beta, gamma * b * c - a * alpha, 0,
 		gamma * a * c - b * alpha, gamma * b * c + a * alpha, gamma * c * c + beta, 0,
 		0, 0, 0, 1
 	};
-	return result = rotation;
+	return result = rotMtx;
 }
 
 //
 Matrix4x4 Mtx44RotDeg(Matrix4x4& result, const Vector3D axis, const float degrees)
 { return Mtx44RotRad(result, axis, static_cast<float>(degrees / 180.0f * M_PI)); }
+
+//
+Matrix4x4 Mtx44Shear(Matrix4x4 & result, const Vector3D& shear, const Vector3D& normal)
+{
+	const float x = Vector3DDotProduct(shear, normal);
+	if (x <= -EPSILON || EPSILON <= x)
+	{ throw "Normal and Shear vectors are not perpendicular in Mtx44Shear()"; }
+	// v' = v + (normal dot v) * shear
+	const Vector3D e1Prime = e1_3D + Vector3DDotProduct(normal, e1_3D) * shear;
+	const Vector3D e2Prime = e2_3D + Vector3DDotProduct(normal, e2_3D) * shear;
+	const Vector3D e3Prime = e3_3D + Vector3DDotProduct(normal, e3_3D) * shear;
+	Mtx44Identity(result);
+	for (size_t i{ 0 }; i < sz - 1; ++i)
+	{
+		result.m2[i][0] = e1Prime.m[i];
+		result.m2[i][1] = e2Prime.m[i];
+		result.m2[i][2] = e3Prime.m[i];
+	}
+	return result;
+}
+
+//
+Matrix4x4 Mtx44Proj(Matrix4x4& result, const Vector3D& normal)
+{
+	// v' = v - proj(normal)v
+	const Vector3D e1Prime = e1_3D - Vector3DProj(normal, e1_3D);
+	const Vector3D e2Prime = e2_3D - Vector3DProj(normal, e2_3D);
+	const Vector3D e3Prime = e3_3D - Vector3DProj(normal, e3_3D);
+	Mtx44Identity(result);
+	for (size_t i{ 0 }; i < sz - 1; ++i)
+	{
+		result.m2[i][0] = e1Prime.m[i];
+		result.m2[i][1] = e2Prime.m[i];
+		result.m2[i][2] = e3Prime.m[i];
+	}
+	return result;
+}
 
 //
 Matrix4x4 Mtx44Transpose(Matrix4x4& result, const Matrix4x4& mtx)

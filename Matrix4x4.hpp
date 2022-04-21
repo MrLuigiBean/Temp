@@ -91,6 +91,12 @@ Matrix4x4 Mtx44RotRad(Matrix4x4& result, Vector3D axis, float radians);
 Matrix4x4 Mtx44RotDeg(Matrix4x4& result, Vector3D axis, float degrees);
 
 //
+Matrix4x4 Mtx44Shear(Matrix4x4& result, const Vector3D& shear, const Vector3D& normal);
+
+//
+Matrix4x4 Mtx44Proj(Matrix4x4& result, const Vector3D& normal);
+
+//
 Matrix4x4 Mtx44Transpose(Matrix4x4& result, const Matrix4x4& mtx);
 
 //
