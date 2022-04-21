@@ -5,9 +5,9 @@
 
 #include "Vector3D.hpp"
 
-extern const Vector3D e1; // {1, 0, 0}
-extern const Vector3D e2; // {0, 1, 0}
-extern const Vector3D e3; // {0, 0, 1}
+extern const Vector3D e1_3D; // {1, 0, 0}
+extern const Vector3D e2_3D; // {0, 1, 0}
+extern const Vector3D e3_3D; // {0, 0, 1}
 
 //
 typedef union Matrix4x4

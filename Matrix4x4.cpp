@@ -5,9 +5,9 @@
 
 static const size_t sz = 4; // # of dimensions of matrix
 
-const Vector3D e1{ 1, 0, 0 };
-const Vector3D e2{ 0, 1, 0 };
-const Vector3D e3{ 0, 0, 1 };
+const Vector3D e1_3D{ 1, 0, 0 };
+const Vector3D e2_3D{ 0, 1, 0 };
+const Vector3D e3_3D{ 0, 0, 1 };
 
 //
 Matrix4x4::Matrix4x4(const float* pArr)
@@ -145,9 +145,9 @@ Matrix4x4 Mtx44Scale(Matrix4x4& result, const float x, const float y, const floa
 Matrix4x4 Mtx44RotRad(Matrix4x4& result, const Vector3D axis, const float radians)
 {
 	// e1 rotation
-	if (axis == -e1)
-	{ return Mtx44RotRad(result, e1, -radians); }
-	if (axis == e1)
+	if (axis == -e1_3D)
+	{ return Mtx44RotRad(result, e1_3D, -radians); }
+	if (axis == e1_3D)
 	{
 		Mtx44Identity(result);
 		result.m11 = result.m22 = cosf(radians);
@@ -157,9 +157,9 @@ Matrix4x4 Mtx44RotRad(Matrix4x4& result, const Vector3D axis, const float radian
 	}
 
 	// e2 rotation
-	if (axis == -e2)
-	{ return Mtx44RotRad(result, e2, -radians); }
-	if (axis == e2)
+	if (axis == -e2_3D)
+	{ return Mtx44RotRad(result, e2_3D, -radians); }
+	if (axis == e2_3D)
 	{
 		Mtx44Identity(result);
 		result.m00 = result.m22 = cosf(radians);
@@ -169,9 +169,9 @@ Matrix4x4 Mtx44RotRad(Matrix4x4& result, const Vector3D axis, const float radian
 	}
 
 	// e3 rotation
-	if (axis == -e3)
-	{ return Mtx44RotRad(result, e3, -radians); }
-	if (axis == e3)
+	if (axis == -e3_3D)
+	{ return Mtx44RotRad(result, e3_3D, -radians); }
+	if (axis == e3_3D)
 	{
 		Mtx44Identity(result);
 		result.m00 = result.m11 = cosf(radians);

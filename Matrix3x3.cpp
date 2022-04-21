@@ -6,6 +6,9 @@
 constexpr float EPSILON = 0.0001f;
 static const size_t sz = 3; // # of dimensions of matrix
 
+const Vector2D e1_2D{ 1, 0 };
+const Vector2D e2_2D{ 0, 1 };
+
 //
 Matrix3x3::Matrix3x3(const float* pArr)
 {
@@ -158,6 +161,36 @@ Matrix3x3 Mtx33RotRad(Matrix3x3& result, const float radians)
 //
 Matrix3x3 Mtx33RotDeg(Matrix3x3& result, const float degrees)
 { return Mtx33RotRad(result, static_cast<float>(degrees / 180.0f * M_PI)); }
+
+//
+Matrix3x3 Mtx33Shear(Matrix3x3 & result, const Vector2D & axis)
+{
+	Vector2D n{ Vector2DNormalize(axis) };
+	n = { -n.y, n.x };
+	const Vector2D e1Prime = e1_2D + Vector2DDotProduct(n, e1_2D) * axis;
+	const Vector2D e2Prime = e2_2D + Vector2DDotProduct(n, e2_2D) * axis;
+	Mtx33Identity(result);
+	for (size_t i{ 0 }; i < sz - 1; ++i)
+	{
+		result.m2[0][i] = e1Prime.m[i];
+		result.m2[1][i] = e2Prime.m[i];
+	}
+	return result;
+}
+
+//
+Matrix3x3 Mtx33Proj(Matrix3x3& result, const Vector2D& axis)
+{
+	const Vector2D e1Prime = Vector2DProj(axis, e1_2D);
+	const Vector2D e2Prime = Vector2DProj(axis, e2_2D);
+	Mtx33Identity(result);
+	for (size_t i{0}; i < sz - 1; ++i)
+	{
+		result.m2[0][i] = e1Prime.m[i];
+		result.m2[1][i] = e2Prime.m[i];
+	}
+	return result;
+}
 
 //
 Matrix3x3 Mtx33Transpose(Matrix3x3& result, const Matrix3x3& mtx)

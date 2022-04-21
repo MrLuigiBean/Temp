@@ -443,9 +443,13 @@ int main()
 	const Matrix3x3 source{ input };
 	Matrix3x3 inv;
 	float det;
-	PrintMatrix("source", source);
-	printf("det %f\n", static_cast<double>(source.Determinant()));
-	PrintMatrix("inverse", Mtx33Inverse(&inv, &det, source));
+	//PrintMatrix("source", source);
+	//printf("det %f\n", static_cast<double>(source.Determinant()));
+	//PrintMatrix("inverse", Mtx33Inverse(&inv, &det, source));
+
+	Mtx33Proj(inv, e1_2D);
+	Mtx33Shear(inv, e1_2D);
+
 
 	// testmain();
 	return 0;

@@ -5,6 +5,9 @@
 
 #include "Vector2D.hpp"
 
+extern const Vector2D e1_2D; // {1, 0}
+extern const Vector2D e2_2D; // {0, 1}
+
 //
 typedef union Matrix3x3
 {
@@ -83,6 +86,12 @@ Matrix3x3 Mtx33RotRad(Matrix3x3& result, float radians);
 
 //
 Matrix3x3 Mtx33RotDeg(Matrix3x3& result, float degrees);
+
+//
+Matrix3x3 Mtx33Shear(Matrix3x3& result, const Vector2D& axis);
+
+//
+Matrix3x3 Mtx33Proj(Matrix3x3& result, const Vector2D& axis);
 
 //
 Matrix3x3 Mtx33Transpose(Matrix3x3& result, const Matrix3x3& mtx);
