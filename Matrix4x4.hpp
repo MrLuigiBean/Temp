@@ -100,6 +100,6 @@ Matrix4x4 Mtx44Proj(Matrix4x4& result, const Vector3D& normal);
 Matrix4x4 Mtx44Transpose(Matrix4x4& result, const Matrix4x4& mtx);
 
 //
-//inverse
+Matrix4x4 Mtx44Inverse(Matrix4x4* result, float* determinant, const Matrix4x4& mtx);
 
 #endif // MATRIX4X4_H_

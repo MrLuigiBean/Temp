@@ -248,4 +248,7 @@ Matrix4x4 Mtx44Transpose(Matrix4x4& result, const Matrix4x4& mtx)
 }
 
 //
-//inverse
+Matrix4x4 Mtx44Inverse(Matrix4x4* result, float* determinant, const Matrix4x4& mtx)
+{
+	return Matrix4x4();
+}
