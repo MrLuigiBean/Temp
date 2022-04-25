@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Matrix3x3.cpp" />
     <ClCompile Include="Matrix4x4.cpp" />
     <ClCompile Include="temp.cpp" />
@@ -146,6 +147,7 @@
     <ClCompile Include="Vector3D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Collision.hpp" />
     <ClInclude Include="Matrix3x3.hpp" />
     <ClInclude Include="Matrix4x4.hpp" />
     <ClInclude Include="Vector2D.hpp" />

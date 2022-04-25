@@ -18,6 +18,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <string>
 #include <cstring> // memset
 
+#include "Collision.hpp"
 #include "Matrix3x3.hpp"
 #include "Matrix4x4.hpp"
 
@@ -27,7 +28,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #define TEST_VEC2 1
 #define TEST_VEC3 1
 #define TEST_MTX33 1
-#define TEST_MTX44 1
+#define TEST_MTX44 0
 
 //
 template <typename T>
@@ -75,6 +76,7 @@ float CompareVec(const T& pSrc, const T& pDst)
 	return d;
 }
 
+//
 int Test2D()
 {
 #if TEST_VEC2
@@ -427,6 +429,7 @@ int Test2D()
 	return 1;
 }
 
+//
 int Test3D()
 {
 #if TEST_VEC3
@@ -768,7 +771,8 @@ int Test3D()
 	bool quit = false;
 
 	// loop until we find an invertible matrix
-	while (!true) // !quit
+	// !quit <- actual condition
+	while (!true)
 	{
 		x = 2.0f * rand() / (float)(RAND_MAX)-1.0f;
 		y = 2.0f * rand() / (float)(RAND_MAX)-1.0f;
@@ -800,6 +804,7 @@ int Test3D()
 	return 1;
 }
 
+//
 int main()
 {
 	float input[] =
@@ -809,7 +814,7 @@ int main()
 		4, 6, 6
 	};
 
-	float input2[9] = { 0 };
+	//float input2[9] = { 0 };
 
 	//float input4[] =
 	//{
@@ -822,9 +827,9 @@ int main()
 	const Matrix3x3 source{ input };
 	Matrix3x3 inv;
 	float det;
-	//PrintMatrix("source", source);
-	//printf("det %f\n", static_cast<double>(source.Determinant()));
-	//PrintMatrix("inverse", Mtx33Inverse(&inv, &det, source));
+	PrintMatrix("source", source);
+	printf("det %f\n", static_cast<double>(source.Determinant()));
+	PrintMatrix("inverse", Mtx33Inverse(&inv, &det, source));
 
 	Mtx33Proj(inv, e1_2D);
 	Mtx33Shear(inv, e1_2D);
