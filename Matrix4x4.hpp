@@ -76,28 +76,28 @@ Matrix4x4 operator*(const Matrix4x4& lhs, const Matrix4x4& rhs);
 Vector3D operator*(const Matrix4x4& mtx, const Vector3D& rhs);
 
 //
-Matrix4x4 Mtx44Identity(Matrix4x4& result);
+Matrix4x4 Mtx44Identity();
 
 //
-Matrix4x4 Mtx44Translate(Matrix4x4& result, float x, float y, float z);
+Matrix4x4 Mtx44Translate(float x, float y, float z);
 
 //
-Matrix4x4 Mtx44Scale(Matrix4x4& result, float x, float y, float z);
+Matrix4x4 Mtx44Scale(float x, float y, float z);
 
 //
-Matrix4x4 Mtx44RotRad(Matrix4x4& result, Vector3D axis, float radians);
+Matrix4x4 Mtx44RotRad(Vector3D axis, float radians);
 
 //
-Matrix4x4 Mtx44RotDeg(Matrix4x4& result, Vector3D axis, float degrees);
+Matrix4x4 Mtx44RotDeg(Vector3D axis, float degrees);
 
 //
-Matrix4x4 Mtx44Shear(Matrix4x4& result, const Vector3D& shear, const Vector3D& normal);
+Matrix4x4 Mtx44Shear(const Vector3D& shear, const Vector3D& normal);
 
 //
-Matrix4x4 Mtx44Proj(Matrix4x4& result, const Vector3D& normal);
+Matrix4x4 Mtx44Proj(const Vector3D& normal);
 
 //
-Matrix4x4 Mtx44Transpose(Matrix4x4& result, const Matrix4x4& mtx);
+Matrix4x4 Mtx44Transpose(const Matrix4x4& mtx);
 
 //
 Matrix4x4 Mtx44Inverse(Matrix4x4* result, float* determinant, const Matrix4x4& mtx);

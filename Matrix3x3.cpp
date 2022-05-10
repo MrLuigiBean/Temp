@@ -120,8 +120,9 @@ Vector2D operator*(const Matrix3x3& pMtx, const Vector2D& rhs)
 }
 
 //
-Matrix3x3 Mtx33Identity(Matrix3x3& result)
+Matrix3x3 Mtx33Identity()
 {
+	Matrix3x3 result;
 	for (size_t i = 0; i < sz; ++i)
 	{
 		for (size_t j = 0; j < sz; ++j)
@@ -131,27 +132,27 @@ Matrix3x3 Mtx33Identity(Matrix3x3& result)
 }
 
 //
-Matrix3x3 Mtx33Translate(Matrix3x3& result, const float x, const float y)
+Matrix3x3 Mtx33Translate(const float x, const float y)
 {
-	Mtx33Identity(result);
+	Matrix3x3 result = Mtx33Identity();
 	result.m02 = x;
 	result.m12 = y;
 	return result;
 }
 
 //
-Matrix3x3 Mtx33Scale(Matrix3x3& result, const float x, const float y)
+Matrix3x3 Mtx33Scale(const float x, const float y)
 {
-	Mtx33Identity(result);
+	Matrix3x3 result = Mtx33Identity();
 	result.m00 = x;
 	result.m11 = y;
 	return result;
 }
 
 //
-Matrix3x3 Mtx33RotRad(Matrix3x3& result, const float radians)
+Matrix3x3 Mtx33RotRad(const float radians)
 {
-	Mtx33Identity(result);
+	Matrix3x3 result = Mtx33Identity();
 	result.m00 = result.m11 = cosf(radians);
 	result.m10 = sinf(radians);
 	result.m01 = -result.m10;
@@ -159,18 +160,18 @@ Matrix3x3 Mtx33RotRad(Matrix3x3& result, const float radians)
 }
 
 //
-Matrix3x3 Mtx33RotDeg(Matrix3x3& result, const float degrees)
-{ return Mtx33RotRad(result, static_cast<float>(degrees / 180.0f * M_PI)); }
+Matrix3x3 Mtx33RotDeg(const float degrees)
+{ return Mtx33RotRad(static_cast<float>(degrees / 180.0f * M_PI)); }
 
 //
-Matrix3x3 Mtx33Shear(Matrix3x3& result, const Vector2D& shear)
+Matrix3x3 Mtx33Shear(const Vector2D& shear)
 {
 	Vector2D n{ Vector2DNormalize(shear) };
 	n = { -n.y, n.x };
 	// v' = v + (n dot v)s
 	const Vector2D e1Prime = e1_2D + Vector2DDotProduct(n, e1_2D) * shear;
 	const Vector2D e2Prime = e2_2D + Vector2DDotProduct(n, e2_2D) * shear;
-	Mtx33Identity(result);
+	Matrix3x3 result = Mtx33Identity();
 	for (size_t i{ 0 }; i < sz - 1; ++i)
 	{
 		result.m2[i][0] = e1Prime.m[i];
@@ -180,12 +181,12 @@ Matrix3x3 Mtx33Shear(Matrix3x3& result, const Vector2D& shear)
 }
 
 //
-Matrix3x3 Mtx33Proj(Matrix3x3& result, const Vector2D& axis)
+Matrix3x3 Mtx33Proj(const Vector2D& axis)
 {
 	// v' = proj(axis)v
 	const Vector2D e1Prime = Vector2DProj(axis, e1_2D);
 	const Vector2D e2Prime = Vector2DProj(axis, e2_2D);
-	Mtx33Identity(result);
+	Matrix3x3 result = Mtx33Identity();
 	for (size_t i{0}; i < sz - 1; ++i)
 	{
 		result.m2[i][0] = e1Prime.m[i];
@@ -195,8 +196,9 @@ Matrix3x3 Mtx33Proj(Matrix3x3& result, const Vector2D& axis)
 }
 
 //
-Matrix3x3 Mtx33Transpose(Matrix3x3& result, const Matrix3x3& mtx)
+Matrix3x3 Mtx33Transpose(const Matrix3x3& mtx)
 {
+	Matrix3x3 result;
 	for (size_t i = 0; i < sz; ++i)
 	{
 		for (size_t j = 0; j < sz; ++j)
@@ -231,7 +233,7 @@ Matrix3x3 Mtx33Inverse(Matrix3x3* result, float* determinant, const Matrix3x3& m
 		}
 	}
 
-	Mtx33Transpose(adjointTranspose, adjoint);
+	adjointTranspose = Mtx33Transpose(adjoint);
 
 	for (size_t i = 0; i < sz * sz; ++i)
 	{ result->m[i] = adjointTranspose.m[i] / *determinant; }

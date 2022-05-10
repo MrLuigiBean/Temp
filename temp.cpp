@@ -28,7 +28,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #define TEST_VEC2 1
 #define TEST_VEC3 1
 #define TEST_MTX33 1
-#define TEST_MTX44 0
+#define TEST_MTX44 1
 
 //
 template <typename T>
@@ -248,7 +248,7 @@ int Test2D()
 
 	// Identity Matrix
 	//--------------------------------------------------------------------------
-	Mtx33Identity(m0);
+	m0 = Mtx33Identity();
 	d = CompareMtx(id, m0);
 	printf("Mtx33Identity: \t\t%s\n",
 		(CompareMtx(id, m0) < EPSILON) ? "Pass" : "Fail");
@@ -259,7 +259,7 @@ int Test2D()
 	x = 2.0f * rand() / (float)(RAND_MAX)-1.0f;
 	y = 2.0f * rand() / (float)(RAND_MAX)-1.0f;
 
-	Mtx33Translate(m0, x, y);
+	m0 = Mtx33Translate(x, y);
 	m0.m02 -= x;
 	m0.m12 -= y;
 	printf("Mtx33Translate: \t%s\n",
@@ -271,7 +271,7 @@ int Test2D()
 	x = 2.0f * rand() / (float)(RAND_MAX)-1.0f;
 	y = 2.0f * rand() / (float)(RAND_MAX)-1.0f;
 
-	Mtx33Scale(m0, x, y);
+	m0 = Mtx33Scale(x, y);
 	m0.m00 /= x;
 	m0.m11 /= y;
 
@@ -284,8 +284,8 @@ int Test2D()
 	x = 2.0f * rand() / (float)(RAND_MAX)-1.0f;
 	y = 2.0f * rand() / (float)(RAND_MAX)-1.0f;
 
-	Mtx33Translate(m0, x, y);
-	Mtx33Scale(m1, x, y);
+	m0 = Mtx33Translate(x, y);
+	m1 = Mtx33Scale(x, y);
 	m0 = m0 * m1;
 	m0.m02 -= x;
 	m0.m12 -= y;
@@ -299,8 +299,8 @@ int Test2D()
 	x = 2.0f * rand() / (float)(RAND_MAX)-1.0f;
 	y = 2.0f * rand() / (float)(RAND_MAX)-1.0f;
 
-	Mtx33Translate(m0, x, y);
-	Mtx33Scale(m1, x, y);
+	m0 = Mtx33Translate(x, y);
+	m1 = Mtx33Scale(x, y);
 	m0 = m1 * m0;
 	m0.m02 -= x * x;
 	m0.m12 -= y * y;
@@ -314,8 +314,8 @@ int Test2D()
 	x = 2.0f * rand() / (float)(RAND_MAX)-1.0f;
 	y = 2.0f * rand() / (float)(RAND_MAX)-1.0f;
 
-	Mtx33Translate(m0, x, y);
-	Mtx33Scale(m1, x, y);
+	m0 = Mtx33Translate(x, y);
+	m1 = Mtx33Scale(x, y);
 	m0 *= m1;
 	m0.m02 -= x;
 	m0.m12 -= y;
@@ -328,8 +328,8 @@ int Test2D()
 	// Rotation Matrix in radians
 	//--------------------------------------------------------------------------
 	n = (rand() % 16) + 15;
-	Mtx33Identity(m0);
-	Mtx33RotRad(m1, 2.0f * PI / n);
+	m0 = Mtx33Identity();
+	m1 = Mtx33RotRad(2.0f * PI / n);
 
 	for (long i = 0; i < n; i++)
 		m0 = m1 * m0;
@@ -340,8 +340,8 @@ int Test2D()
 	// Rotation Matrix in degrees
 	//--------------------------------------------------------------------------
 	n = (rand() % 16) + 15;
-	Mtx33Identity(m0);
-	Mtx33RotDeg(m1, 360.0f / n);
+	m0 = Mtx33Identity();
+	m1 = Mtx33RotDeg(360.0f / n);
 
 	for (long i = 0; i < n; i++)
 		m0 = m1 * m0;
@@ -352,8 +352,8 @@ int Test2D()
 	// Transpose Matrix
 	//--------------------------------------------------------------------------
 
-	Mtx33RotRad(m0, rand() / (float)(RAND_MAX) * 2.0f * PI);
-	Mtx33Transpose(m1, m0);
+	m0 = Mtx33RotRad(rand() / (float)(RAND_MAX) * 2.0f * PI);
+	m1 = Mtx33Transpose(m0);
 	m0 = m1 * m0;
 
 	printf("Mtx33Transpose: \t%s\n",
@@ -368,7 +368,7 @@ int Test2D()
 	n = (rand() % 16) + 15;
 	u.x = x;
 	u.y = y;
-	Mtx33RotRad(m0, 2.0f * PI / n);
+	m0 = Mtx33RotRad(2.0f * PI / n);
 
 	for (long i = 0; i < n; i++)
 		u = m0 * u;
@@ -383,7 +383,7 @@ int Test2D()
 	n = (rand() % 16) + 15;
 	u.x = x;
 	u.y = y;
-	Mtx33Translate(m0, x, y);
+	m0 = Mtx33Translate(x, y);
 
 	for (long i = 1; i < n; i++)
 		u = m0 * u;
@@ -402,12 +402,12 @@ int Test2D()
 	{
 		x = 2.0f * rand() / (float)(RAND_MAX)-1.0f;
 		y = 2.0f * rand() / (float)(RAND_MAX)-1.0f;
-		Mtx33Translate(m0, x, y);
+		m0 = Mtx33Translate(x, y);
 
 		n = (rand() % 16) + 15;
-		Mtx33RotRad(m1, 2.0f * PI / n);
+		m1 = Mtx33RotRad(2.0f * PI / n);
 
-		Mtx33Scale(m2, x, y);
+		m2 = Mtx33Scale(x, y);
 
 		m3 = m0 * m1 * m2;
 
@@ -604,7 +604,7 @@ int Test3D()
 
 	// Identity Matrix
 	//--------------------------------------------------------------------------
-	Mtx44Identity(m0);
+	m0 = Mtx44Identity();
 	d = CompareMtx(id, m0);
 	printf("Mtx44Identity: \t\t%s\n",
 		(CompareMtx(id, m0) < EPSILON) ? "Pass" : "Fail");
@@ -616,7 +616,7 @@ int Test3D()
 	y = 2.0f * rand() / (float)(RAND_MAX)-1.0f;
 	z = 2.0f * rand() / (float)(RAND_MAX)-1.0f;
 
-	Mtx44Translate(m0, x, y, z);
+	m0 = Mtx44Translate(x, y, z);
 	m0.m03 -= x;
 	m0.m13 -= y;
 	m0.m23 -= z;
@@ -630,7 +630,7 @@ int Test3D()
 	y = 2.0f * rand() / (float)(RAND_MAX)-1.0f;
 	z = 2.0f * rand() / (float)(RAND_MAX)-1.0f;
 
-	Mtx44Scale(m0, x, y, z);
+	m0 = Mtx44Scale(x, y, z);
 	m0.m00 /= x;
 	m0.m11 /= y;
 	m0.m22 /= z;
@@ -645,8 +645,8 @@ int Test3D()
 	y = 2.0f * rand() / (float)(RAND_MAX)-1.0f;
 	z = 2.0f * rand() / (float)(RAND_MAX)-1.0f;
 
-	Mtx44Translate(m0, x, y, z);
-	Mtx44Scale(m1, x, y, z);
+	m0 = Mtx44Translate(x, y, z);
+	m1 = Mtx44Scale(x, y, z);
 	m0 = m0 * m1;
 	m0.m03 -= x;
 	m0.m13 -= y;
@@ -663,8 +663,8 @@ int Test3D()
 	y = 2.0f * rand() / (float)(RAND_MAX)-1.0f;
 	z = 2.0f * rand() / (float)(RAND_MAX)-1.0f;
 
-	Mtx44Translate(m0, x, y, z);
-	Mtx44Scale(m1, x, y, z);
+	m0 = Mtx44Translate(x, y, z);
+	m1 = Mtx44Scale(x, y, z);
 	m0 = m1 * m0;
 	m0.m03 -= x * x;
 	m0.m13 -= y * y;
@@ -681,8 +681,8 @@ int Test3D()
 	y = 2.0f * rand() / (float)(RAND_MAX)-1.0f;
 	z = 2.0f * rand() / (float)(RAND_MAX)-1.0f;
 
-	Mtx44Translate(m0, x, y, z);
-	Mtx44Scale(m1, x, y, z);
+	m0 = Mtx44Translate(x, y, z);
+	m1 = Mtx44Scale(x, y, z);
 	m0 *= m1;
 	m0.m03 -= x;
 	m0.m13 -= y;
@@ -697,8 +697,8 @@ int Test3D()
 	// Rotation Matrix in radians
 	//--------------------------------------------------------------------------
 	n = (rand() % 16) + 15;
-	Mtx44Identity(m0);
-	Mtx44RotRad(m1, e3_3D, 2.0f * PI / n);
+	m0 = Mtx44Identity();
+	m1 = Mtx44RotRad(e3_3D, 2.0f * PI / n);
 
 	for (long i = 0; i < n; i++)
 		m0 = m1 * m0;
@@ -709,8 +709,8 @@ int Test3D()
 	// Rotation Matrix in degrees
 	//--------------------------------------------------------------------------
 	n = (rand() % 16) + 15;
-	Mtx44Identity(m0);
-	Mtx44RotDeg(m1, e3_3D, 360.0f / n);
+	m0 = Mtx44Identity();
+	m1 = Mtx44RotDeg(e3_3D, 360.0f / n);
 
 	for (long i = 0; i < n; i++)
 		m0 = m1 * m0;
@@ -721,8 +721,8 @@ int Test3D()
 	// Transpose Matrix
 	//--------------------------------------------------------------------------
 
-	Mtx44RotRad(m0, e3_3D, rand() / (float)(RAND_MAX) * 2.0f * PI);
-	Mtx44Transpose(m1, m0);
+	m0 = Mtx44RotRad(e3_3D, rand() / (float)(RAND_MAX) * 2.0f * PI);
+	m1 = Mtx44Transpose(m0);
 	m0 = m1 * m0;
 
 	printf("Mtx44Transpose: \t%s\n",
@@ -739,7 +739,7 @@ int Test3D()
 	u.x = x;
 	u.y = y;
 	u.z = z;
-	Mtx44RotRad(m0, e3_3D, 2.0f * PI / n);
+	m0 = Mtx44RotRad(e3_3D, 2.0f * PI / n);
 
 	for (long i = 0; i < n; i++)
 		u = m0 * u;
@@ -756,7 +756,7 @@ int Test3D()
 	u.x = x;
 	u.y = y;
 	u.z = z;
-	Mtx44Translate(m0, x, y, z);
+	m0 = Mtx44Translate(x, y, z);
 
 	for (long i = 1; i < n; i++)
 		u = m0 * u;
@@ -777,12 +777,12 @@ int Test3D()
 		x = 2.0f * rand() / (float)(RAND_MAX)-1.0f;
 		y = 2.0f * rand() / (float)(RAND_MAX)-1.0f;
 		z = 2.0f * rand() / (float)(RAND_MAX)-1.0f;
-		Mtx44Translate(m0, x, y, z);
+		m0 = Mtx44Translate(x, y, z);
 
 		n = (rand() % 16) + 15;
-		Mtx44RotRad(m1, e3_3D, 2.0f * PI / n);
+		m1 = Mtx44RotRad(e3_3D, 2.0f * PI / n);
 
-		Mtx44Scale(m2, x, y, z);
+		m2 = Mtx44Scale(x, y, z);
 
 		m3 = m0 * m1 * m2;
 
@@ -831,8 +831,8 @@ int main()
 	printf("det %f\n", static_cast<double>(source.Determinant()));
 	PrintMatrix("inverse", Mtx33Inverse(&inv, &det, source));
 
-	Mtx33Proj(inv, e1_2D);
-	Mtx33Shear(inv, e1_2D);
+	inv = Mtx33Proj(e1_2D);
+	inv = Mtx33Shear(e1_2D);
 	PrintMatrix("", inv);
 
 

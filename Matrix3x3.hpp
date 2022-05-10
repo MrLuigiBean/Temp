@@ -73,28 +73,28 @@ Matrix3x3 operator*(const Matrix3x3& lhs, const Matrix3x3& rhs);
 Vector2D operator*(const Matrix3x3& pMtx, const Vector2D& rhs);
 
 //
-Matrix3x3 Mtx33Identity(Matrix3x3& result);
+Matrix3x3 Mtx33Identity();
 
 //
-Matrix3x3 Mtx33Translate(Matrix3x3& result, float x, float y);
+Matrix3x3 Mtx33Translate(float x, float y);
 
 //
-Matrix3x3 Mtx33Scale(Matrix3x3& result, float x, float y);
+Matrix3x3 Mtx33Scale(float x, float y);
 
 //
-Matrix3x3 Mtx33RotRad(Matrix3x3& result, float radians);
+Matrix3x3 Mtx33RotRad(float radians);
 
 //
-Matrix3x3 Mtx33RotDeg(Matrix3x3& result, float degrees);
+Matrix3x3 Mtx33RotDeg(float degrees);
 
 //
-Matrix3x3 Mtx33Shear(Matrix3x3& result, const Vector2D& shear);
+Matrix3x3 Mtx33Shear(const Vector2D& shear);
 
 //
-Matrix3x3 Mtx33Proj(Matrix3x3& result, const Vector2D& axis);
+Matrix3x3 Mtx33Proj(const Vector2D& axis);
 
 //
-Matrix3x3 Mtx33Transpose(Matrix3x3& result, const Matrix3x3& mtx);
+Matrix3x3 Mtx33Transpose(const Matrix3x3& mtx);
 
 //
 Matrix3x3 Mtx33Inverse(Matrix3x3* result, float* determinant, const Matrix3x3& mtx);

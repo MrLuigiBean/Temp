@@ -8,7 +8,7 @@ LineSegment::LineSegment(const Pt2 pos, const float scale, const float dir)
 {
 	Pt2 p0(0, 0), p1(0, 0);
 	Mtx33 rot;
-	Mtx33RotRad(rot, dir);
+	rot = Mtx33RotRad(dir);
 	// scale
 	p0.x -= scale / 2.0f;
 	p1.x += scale / 2.0f;

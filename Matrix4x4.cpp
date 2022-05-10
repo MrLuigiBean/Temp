@@ -112,8 +112,9 @@ Vector3D operator*(const Matrix4x4& mtx, const Vector3D& rhs)
 }
 
 //
-Matrix4x4 Mtx44Identity(Matrix4x4& result)
+Matrix4x4 Mtx44Identity()
 {
+	Matrix4x4 result;
 	for (size_t i = 0; i < sz; ++i)
 	{
 		for (size_t j = 0; j < sz; ++j)
@@ -123,9 +124,9 @@ Matrix4x4 Mtx44Identity(Matrix4x4& result)
 }
 
 //
-Matrix4x4 Mtx44Translate(Matrix4x4& result, const float x, const float y, const float z)
+Matrix4x4 Mtx44Translate(const float x, const float y, const float z)
 {
-	Mtx44Identity(result);
+	Matrix4x4 result = Mtx44Identity();
 	result.m03 = x;
 	result.m13 = y;
 	result.m23 = z;
@@ -133,9 +134,9 @@ Matrix4x4 Mtx44Translate(Matrix4x4& result, const float x, const float y, const 
 }
 
 //
-Matrix4x4 Mtx44Scale(Matrix4x4& result, const float x, const float y, const float z)
+Matrix4x4 Mtx44Scale(const float x, const float y, const float z)
 {
-	Mtx44Identity(result);
+	Matrix4x4 result = Mtx44Identity();
 	result.m00 = x;
 	result.m11 = y;
 	result.m22 = z;
@@ -143,14 +144,14 @@ Matrix4x4 Mtx44Scale(Matrix4x4& result, const float x, const float y, const floa
 }
 
 //
-Matrix4x4 Mtx44RotRad(Matrix4x4& result, const Vector3D axis, const float radians)
+Matrix4x4 Mtx44RotRad(const Vector3D axis, const float radians)
 {
+	Matrix4x4 result = Mtx44Identity();
 	// e1 rotation
 	if (axis == -e1_3D)
-	{ return Mtx44RotRad(result, e1_3D, -radians); }
+	{ return Mtx44RotRad(e1_3D, -radians); }
 	if (axis == e1_3D)
 	{
-		Mtx44Identity(result);
 		result.m11 = result.m22 = cosf(radians);
 		result.m21 = sinf(radians);
 		result.m12 = -result.m21;
@@ -159,10 +160,9 @@ Matrix4x4 Mtx44RotRad(Matrix4x4& result, const Vector3D axis, const float radian
 
 	// e2 rotation
 	if (axis == -e2_3D)
-	{ return Mtx44RotRad(result, e2_3D, -radians); }
+	{ return Mtx44RotRad(e2_3D, -radians); }
 	if (axis == e2_3D)
 	{
-		Mtx44Identity(result);
 		result.m00 = result.m22 = cosf(radians);
 		result.m02 = sinf(radians);
 		result.m20 = -result.m02;
@@ -171,10 +171,9 @@ Matrix4x4 Mtx44RotRad(Matrix4x4& result, const Vector3D axis, const float radian
 
 	// e3 rotation
 	if (axis == -e3_3D)
-	{ return Mtx44RotRad(result, e3_3D, -radians); }
+	{ return Mtx44RotRad(e3_3D, -radians); }
 	if (axis == e3_3D)
 	{
-		Mtx44Identity(result);
 		result.m00 = result.m11 = cosf(radians);
 		result.m10 = sinf(radians);
 		result.m01 = -result.m10;
@@ -195,11 +194,11 @@ Matrix4x4 Mtx44RotRad(Matrix4x4& result, const Vector3D axis, const float radian
 }
 
 //
-Matrix4x4 Mtx44RotDeg(Matrix4x4& result, const Vector3D axis, const float degrees)
-{ return Mtx44RotRad(result, axis, static_cast<float>(degrees / 180.0f * M_PI)); }
+Matrix4x4 Mtx44RotDeg(const Vector3D axis, const float degrees)
+{ return Mtx44RotRad(axis, static_cast<float>(degrees / 180.0f * M_PI)); }
 
 //
-Matrix4x4 Mtx44Shear(Matrix4x4 & result, const Vector3D& shear, const Vector3D& normal)
+Matrix4x4 Mtx44Shear(const Vector3D& shear, const Vector3D& normal)
 {
 	const float x = Vector3DDotProduct(shear, normal);
 	if (x <= -EPSILON || EPSILON <= x)
@@ -208,7 +207,7 @@ Matrix4x4 Mtx44Shear(Matrix4x4 & result, const Vector3D& shear, const Vector3D& 
 	const Vector3D e1Prime = e1_3D + Vector3DDotProduct(normal, e1_3D) * shear;
 	const Vector3D e2Prime = e2_3D + Vector3DDotProduct(normal, e2_3D) * shear;
 	const Vector3D e3Prime = e3_3D + Vector3DDotProduct(normal, e3_3D) * shear;
-	Mtx44Identity(result);
+	Matrix4x4 result = Mtx44Identity();
 	for (size_t i{ 0 }; i < sz - 1; ++i)
 	{
 		result.m2[i][0] = e1Prime.m[i];
@@ -219,13 +218,13 @@ Matrix4x4 Mtx44Shear(Matrix4x4 & result, const Vector3D& shear, const Vector3D& 
 }
 
 //
-Matrix4x4 Mtx44Proj(Matrix4x4& result, const Vector3D& normal)
+Matrix4x4 Mtx44Proj(const Vector3D& normal)
 {
 	// v' = v - proj(normal)v
 	const Vector3D e1Prime = e1_3D - Vector3DProj(normal, e1_3D);
 	const Vector3D e2Prime = e2_3D - Vector3DProj(normal, e2_3D);
 	const Vector3D e3Prime = e3_3D - Vector3DProj(normal, e3_3D);
-	Mtx44Identity(result);
+	Matrix4x4 result = Mtx44Identity();
 	for (size_t i{ 0 }; i < sz - 1; ++i)
 	{
 		result.m2[i][0] = e1Prime.m[i];
@@ -236,8 +235,9 @@ Matrix4x4 Mtx44Proj(Matrix4x4& result, const Vector3D& normal)
 }
 
 //
-Matrix4x4 Mtx44Transpose(Matrix4x4& result, const Matrix4x4& mtx)
+Matrix4x4 Mtx44Transpose(const Matrix4x4& mtx)
 {
+	Matrix4x4 result = Mtx44Identity();
 	for (size_t i = 0; i < sz; ++i)
 	{
 		for (size_t j = 0; j < sz; ++j)
@@ -250,5 +250,5 @@ Matrix4x4 Mtx44Transpose(Matrix4x4& result, const Matrix4x4& mtx)
 //
 Matrix4x4 Mtx44Inverse(Matrix4x4* result, float* determinant, const Matrix4x4& mtx)
 {
-	return Matrix4x4();
+	return {};
 }
