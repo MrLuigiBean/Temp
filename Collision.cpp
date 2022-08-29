@@ -1,4 +1,4 @@
-//
+/*
 #include <cmath>
 #include "Collision.hpp"
 #include "Matrix3x3.hpp"
@@ -68,7 +68,7 @@ int CollisionIntersection_CircleLineSegment(const Circle& circle, const Pt2& ptE
 			}
 		}
 		else
-		{ /*CheckMovingCircleToLineEdge(false);*/ }
+		{ /*CheckMovingCircleToLineEdge(false); }
 	}
 	else if (lineOfSightDP >= circle.m_radius)
 	{
@@ -99,10 +99,10 @@ int CollisionIntersection_CircleLineSegment(const Circle& circle, const Pt2& ptE
 			}
 		}
 		else
-		{ /*CheckMovingCircleToLineEdge(false);*/ }
+		{ /*CheckMovingCircleToLineEdge(false); }
 	}
 	else
-	{ /*CheckMovingCircleToLineEdge(true);*/ }
+	{ /*CheckMovingCircleToLineEdge(true); }
 	// as Bs is in between LNS1 and LNS2
 
 	return 0; // no intersection
@@ -204,3 +204,4 @@ void CollisionResponse_CircleCircle(Vec2& normal, const float interTime, Vec2& v
 	(void)reflectedVectorB;
 	(void)ptEndB;
 }
+*/

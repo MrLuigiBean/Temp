@@ -1,4 +1,4 @@
-//
+/*
 #pragma once
 #ifndef COLLISION_HPP_
 #define COLLISION_HPP_
@@ -107,3 +107,4 @@ void CollisionResponse_CircleCircle(Vec2& normal, const float interTime,
 	Vec2& reflectedVectorB, Pt2& ptEndB);
 
 #endif // COLLISION_HPP_
+*/
