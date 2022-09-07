@@ -15,9 +15,9 @@ typedef union Matrix3x3
 	// but it's way more convenient this way :(
 	struct
 	{
-		float m00, m01, m02;
-		float m10, m11, m12;
-		float m20, m21, m22;
+		float a00, a01, a02;
+		float a10, a11, a12;
+		float a20, a21, a22;
 	};
 
 	float m[9]{};
@@ -29,26 +29,26 @@ typedef union Matrix3x3
 	Matrix3x3() = default;
 
 	//
-	explicit Matrix3x3(const float* pArr);
+	explicit Matrix3x3(const float* pArr_);
 
 	//
-	Matrix3x3(float _00, float _01, float _02,
-		float _10, float _11, float _12,
-		float _20, float _21, float _22);
+	Matrix3x3(float a00_, float a01_, float a02_,
+		float a10_, float a11_, float a12_,
+		float a20_, float a21_, float a22_);
 
 	/* Assignment operators */
 
 	//
-	Matrix3x3& operator=(const Matrix3x3& rhs);
+	Matrix3x3& operator=(const Matrix3x3& rhs_);
 
 	//
-	Matrix3x3& operator+=(const Matrix3x3& rhs);
+	Matrix3x3& operator+=(const Matrix3x3& rhs_);
 
 	//
-	Matrix3x3& operator-=(const Matrix3x3& rhs);
+	Matrix3x3& operator-=(const Matrix3x3& rhs_);
 
 	//
-	Matrix3x3& operator*=(const Matrix3x3& rhs);
+	Matrix3x3& operator*=(const Matrix3x3& rhs_);
 
 	/* Others */
 
@@ -56,47 +56,47 @@ typedef union Matrix3x3
 	float Determinant() const;
 
 	//
-	void Swap(Matrix3x3& rhs);
+	void Swap(Matrix3x3& rhs_);
 
 } Matrix3x3, Mtx33;
 
 //
-Matrix3x3 operator+(const Matrix3x3& lhs, const Matrix3x3& rhs);
+Matrix3x3 operator+(const Matrix3x3& lhs_, const Matrix3x3& rhs_);
 
 //
-Matrix3x3 operator-(const Matrix3x3& lhs, const Matrix3x3& rhs);
+Matrix3x3 operator-(const Matrix3x3& lhs_, const Matrix3x3& rhs_);
 
 //
-Matrix3x3 operator*(const Matrix3x3& lhs, const Matrix3x3& rhs);
+Matrix3x3 operator*(const Matrix3x3& lhs_, const Matrix3x3& rhs_);
 
 //
-Vector2D operator*(const Matrix3x3& pMtx, const Vector2D& rhs);
+Vector2D operator*(const Matrix3x3& pMtx_, const Vector2D& rhs_);
 
 //
 Matrix3x3 Mtx33Identity();
 
 //
-Matrix3x3 Mtx33Translate(float x, float y);
+Matrix3x3 Mtx33Translate(float x_, float y_);
 
 //
-Matrix3x3 Mtx33Scale(float x, float y);
+Matrix3x3 Mtx33Scale(float x_, float y_);
 
 //
-Matrix3x3 Mtx33RotRad(float radians);
+Matrix3x3 Mtx33RotRad(float radians_);
 
 //
-Matrix3x3 Mtx33RotDeg(float degrees);
+Matrix3x3 Mtx33RotDeg(float degrees_);
 
 //
-Matrix3x3 Mtx33Shear(const Vector2D& shear);
+Matrix3x3 Mtx33Shear(const Vector2D& shear_);
 
 //
-Matrix3x3 Mtx33Proj(const Vector2D& axis);
+Matrix3x3 Mtx33Proj(const Vector2D& axis_);
 
 //
-Matrix3x3 Mtx33Transpose(const Matrix3x3& mtx);
+Matrix3x3 Mtx33Transpose(const Matrix3x3& mtx_);
 
 //
-Matrix3x3 Mtx33Inverse(Matrix3x3* result, float* determinant, const Matrix3x3& mtx);
+Matrix3x3 Mtx33Inverse(Matrix3x3* result_, float* determinant_, const Matrix3x3& mtx_);
 
 #endif // MATRIX3X3_H_

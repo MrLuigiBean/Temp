@@ -260,8 +260,8 @@ int Test2D()
 	y = 2.0f * rand() / (float)(RAND_MAX)-1.0f;
 
 	m0 = Mtx33Translate(x, y);
-	m0.m02 -= x;
-	m0.m12 -= y;
+	m0.a02 -= x;
+	m0.a12 -= y;
 	printf("Mtx33Translate: \t%s\n",
 		(CompareMtx(id, m0) < EPSILON) ? "Pass" : "Fail");
 
@@ -272,8 +272,8 @@ int Test2D()
 	y = 2.0f * rand() / (float)(RAND_MAX)-1.0f;
 
 	m0 = Mtx33Scale(x, y);
-	m0.m00 /= x;
-	m0.m11 /= y;
+	m0.a00 /= x;
+	m0.a11 /= y;
 
 	printf("Mtx33Scale: \t\t%s\n",
 		(CompareMtx(id, m0) < EPSILON) ? "Pass" : "Fail");
@@ -287,10 +287,10 @@ int Test2D()
 	m0 = Mtx33Translate(x, y);
 	m1 = Mtx33Scale(x, y);
 	m0 = m0 * m1;
-	m0.m02 -= x;
-	m0.m12 -= y;
-	m0.m00 /= x;
-	m0.m11 /= y;
+	m0.a02 -= x;
+	m0.a12 -= y;
+	m0.a00 /= x;
+	m0.a11 /= y;
 
 	printf("Mtx33Concat 1: \t\t%s\n",
 		(CompareMtx(id, m0) < EPSILON) ? "Pass" : "Fail");
@@ -302,10 +302,10 @@ int Test2D()
 	m0 = Mtx33Translate(x, y);
 	m1 = Mtx33Scale(x, y);
 	m0 = m1 * m0;
-	m0.m02 -= x * x;
-	m0.m12 -= y * y;
-	m0.m00 /= x;
-	m0.m11 /= y;
+	m0.a02 -= x * x;
+	m0.a12 -= y * y;
+	m0.a00 /= x;
+	m0.a11 /= y;
 
 	printf("Mtx33Concat 2: \t\t%s\n",
 		(CompareMtx(id, m0) < EPSILON) ? "Pass" : "Fail");
@@ -317,10 +317,10 @@ int Test2D()
 	m0 = Mtx33Translate(x, y);
 	m1 = Mtx33Scale(x, y);
 	m0 *= m1;
-	m0.m02 -= x;
-	m0.m12 -= y;
-	m0.m00 /= x;
-	m0.m11 /= y;
+	m0.a02 -= x;
+	m0.a12 -= y;
+	m0.a00 /= x;
+	m0.a11 /= y;
 
 	printf("Mtx33Concat 3: \t\t%s\n",
 		(CompareMtx(id, m0) < EPSILON) ? "Pass" : "Fail");
@@ -617,9 +617,9 @@ int Test3D()
 	z = 2.0f * rand() / (float)(RAND_MAX)-1.0f;
 
 	m0 = Mtx44Translate(x, y, z);
-	m0.m03 -= x;
-	m0.m13 -= y;
-	m0.m23 -= z;
+	m0.a03 -= x;
+	m0.a13 -= y;
+	m0.a23 -= z;
 	printf("Mtx44Translate: \t%s\n",
 		(CompareMtx(id, m0) < EPSILON) ? "Pass" : "Fail");
 
@@ -631,9 +631,9 @@ int Test3D()
 	z = 2.0f * rand() / (float)(RAND_MAX)-1.0f;
 
 	m0 = Mtx44Scale(x, y, z);
-	m0.m00 /= x;
-	m0.m11 /= y;
-	m0.m22 /= z;
+	m0.a00 /= x;
+	m0.a11 /= y;
+	m0.a22 /= z;
 
 	printf("Mtx44Scale: \t\t%s\n",
 		(CompareMtx(id, m0) < EPSILON) ? "Pass" : "Fail");
@@ -648,12 +648,12 @@ int Test3D()
 	m0 = Mtx44Translate(x, y, z);
 	m1 = Mtx44Scale(x, y, z);
 	m0 = m0 * m1;
-	m0.m03 -= x;
-	m0.m13 -= y;
-	m0.m23 -= z;
-	m0.m00 /= x;
-	m0.m11 /= y;
-	m0.m22 /= z;
+	m0.a03 -= x;
+	m0.a13 -= y;
+	m0.a23 -= z;
+	m0.a00 /= x;
+	m0.a11 /= y;
+	m0.a22 /= z;
 
 	printf("Mtx44Concat 1: \t\t%s\n",
 		(CompareMtx(id, m0) < EPSILON) ? "Pass" : "Fail");
@@ -666,12 +666,12 @@ int Test3D()
 	m0 = Mtx44Translate(x, y, z);
 	m1 = Mtx44Scale(x, y, z);
 	m0 = m1 * m0;
-	m0.m03 -= x * x;
-	m0.m13 -= y * y;
-	m0.m23 -= z * z;
-	m0.m00 /= x;
-	m0.m11 /= y;
-	m0.m22 /= z;
+	m0.a03 -= x * x;
+	m0.a13 -= y * y;
+	m0.a23 -= z * z;
+	m0.a00 /= x;
+	m0.a11 /= y;
+	m0.a22 /= z;
 
 	printf("Mtx44Concat 2: \t\t%s\n",
 		(CompareMtx(id, m0) < EPSILON) ? "Pass" : "Fail");
@@ -684,12 +684,12 @@ int Test3D()
 	m0 = Mtx44Translate(x, y, z);
 	m1 = Mtx44Scale(x, y, z);
 	m0 *= m1;
-	m0.m03 -= x;
-	m0.m13 -= y;
-	m0.m23 -= z;
-	m0.m00 /= x;
-	m0.m11 /= y;
-	m0.m22 /= z;
+	m0.a03 -= x;
+	m0.a13 -= y;
+	m0.a23 -= z;
+	m0.a00 /= x;
+	m0.a11 /= y;
+	m0.a22 /= z;
 
 	printf("Mtx44Concat 3: \t\t%s\n",
 		(CompareMtx(id, m0) < EPSILON) ? "Pass" : "Fail");

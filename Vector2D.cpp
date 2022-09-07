@@ -6,42 +6,43 @@
 constexpr float EPSILON = 0.0001f;
 
 //
-Vector2D::Vector2D(const float x, const float y) : x{ x }, y{ y }
+Vector2D::Vector2D(const float x_, const float y_) : x{ x_ }, y{ y_ }
 { /* empty by design */ }
 
-Vector2D& Vector2D::operator=(const Vector2D& rhs)
+//
+Vector2D& Vector2D::operator=(const Vector2D& rhs_)
 {
-	Vec2 temp{ rhs };
+	Vec2 temp{ rhs_ };
 	Swap(temp);
 	return *this;
 }
 
 //
-Vector2D& Vector2D::operator+=(const Vector2D& rhs)
-{ return *this = *this + rhs; }
+Vector2D& Vector2D::operator+=(const Vector2D& rhs_)
+{ return *this = *this + rhs_; }
 
 //
-Vector2D& Vector2D::operator-=(const Vector2D& rhs)
- {	return *this = *this - rhs; }
+Vector2D& Vector2D::operator-=(const Vector2D& rhs_)
+ {	return *this = *this - rhs_; }
 
 //
-Vector2D& Vector2D::operator*=(const float rhs)
-{ 	return *this = *this * rhs; }
+Vector2D& Vector2D::operator*=(const float rhs_)
+{ 	return *this = *this * rhs_; }
 
 //
-Vector2D& Vector2D::operator/=(const float rhs)
-{ return *this = *this / rhs; }
+Vector2D& Vector2D::operator/=(const float rhs_)
+{ return *this = *this / rhs_; }
 
 //
 Vector2D Vector2D::operator-() const
 { return { x * -1, y * -1 }; }
 
 //
-bool Vector2D::operator==(const Vector2D& rhs) const
+bool Vector2D::operator==(const Vector2D& rhs_) const
 {
 	return
-		-EPSILON <= x - rhs.x && x - rhs.x <= EPSILON &&
-		-EPSILON <= y - rhs.y && y - rhs.y <= EPSILON;
+		-EPSILON <= x - rhs_.x && x - rhs_.x <= EPSILON &&
+		-EPSILON <= y - rhs_.y && y - rhs_.y <= EPSILON;
 }
 
 //
@@ -53,74 +54,74 @@ float Vector2D::LengthSq() const
 { return x * x + y * y; }
 
 //
-void Vector2D::Swap(Vector2D& rhs)
-{ std::swap((*this).m, rhs.m); }
+void Vector2D::Swap(Vector2D& rhs_)
+{ std::swap((*this).m, rhs_.m); }
 
 //
-Vector2D operator+(const Vector2D& lhs, const Vector2D& rhs)
-{ return { lhs.x + rhs.x, lhs.y + rhs.y }; }
+Vector2D operator+(const Vector2D& lhs_, const Vector2D& rhs_)
+{ return { lhs_.x + rhs_.x, lhs_.y + rhs_.y }; }
 
 //
-Vector2D operator-(const Vector2D& lhs, const Vector2D& rhs)
-{ return { lhs.x - rhs.x, lhs.y - rhs.y }; }
+Vector2D operator-(const Vector2D& lhs_, const Vector2D& rhs_)
+{ return { lhs_.x - rhs_.x, lhs_.y - rhs_.y }; }
 
 //
-Vector2D operator*(const Vector2D& lhs, const float rhs)
-{ return { lhs.x * rhs, lhs.y * rhs }; }
+Vector2D operator*(const Vector2D& lhs_, const float rhs_)
+{ return { lhs_.x * rhs_, lhs_.y * rhs_ }; }
 
 //
-Vector2D operator*(const float lhs, const Vector2D& rhs)
-{ return { lhs * rhs.x, lhs * rhs.y }; }
+Vector2D operator*(const float lhs_, const Vector2D& rhs_)
+{ return { lhs_ * rhs_.x, lhs_ * rhs_.y }; }
 
 //
-Vector2D operator/(const Vector2D& lhs, const float rhs)
+Vector2D operator/(const Vector2D& lhs_, const float rhs_)
 {
-	if (-EPSILON <= rhs && rhs <= EPSILON)
+	if (-EPSILON <= rhs_ && rhs_ <= EPSILON)
 	{ throw "Division by 0 in Vector2D operator/"; }
-	return { lhs.x / rhs, lhs.y / rhs };
+	return { lhs_.x / rhs_, lhs_.y / rhs_ };
 }
 
 //
-Vector2D Vector2DNormalize(const Vector2D& vec)
+Vector2D Vector2DNormalize(const Vector2D& vec_)
 {
-	const float magnitude = vec.Length();
+	const float magnitude = vec_.Length();
 	if (-EPSILON <= magnitude && magnitude <= EPSILON)
 	{ throw "Division by 0 in Vector2DNormalize()"; }
-	return { vec.x / magnitude, vec.y / magnitude };
+	return { vec_.x / magnitude, vec_.y / magnitude };
 }
 
 //
-float Vector2DDistance(const Vector2D& v0, const Vector2D& v1)
-{ return sqrtf(Vector2DSquaredDistance(v0, v1)); }
+float Vector2DDistance(const Vector2D& vec_0_, const Vector2D& vec_1_)
+{ return sqrtf(Vector2DSquaredDistance(vec_0_, vec_1_)); }
 
 //
-float Vector2DSquaredDistance(const Vector2D& v0, const Vector2D& v1)
-{ return (v0.x - v1.x) * (v0.x - v1.x) + (v0.y - v1.y) * (v0.y - v1.y); }
+float Vector2DSquaredDistance(const Vector2D& vec_0_, const Vector2D& vec_1_)
+{ return (vec_0_.x - vec_1_.x) * (vec_0_.x - vec_1_.x) + (vec_0_.y - vec_1_.y) * (vec_0_.y - vec_1_.y); }
 
 //
-float Vector2DDotProduct(const Vector2D& v0, const Vector2D& v1)
-{ return v0.x * v1.x + v0.y * v1.y; }
+float Vector2DDotProduct(const Vector2D& vec_0_, const Vector2D& vec_1_)
+{ return vec_0_.x * vec_1_.x + vec_0_.y * vec_1_.y; }
 
 //
-float Vector2DCrossProductMag(const Vector2D& v0, const Vector2D& v1)
-{ return v0.x * v1.y - v0.y * v1.x; }
+float Vector2DCrossProductMag(const Vector2D& vec_0_, const Vector2D& vec_1_)
+{ return vec_0_.x * vec_1_.y - vec_0_.y * vec_1_.x; }
 
 //
-float Vector2DProjLength(const Vector2D& base, const Vector2D& vec)
-{ return Vector2DDotProduct(Vector2DNormalize(base), vec); }
+float Vector2DProjLength(const Vector2D& base_, const Vector2D& vec_)
+{ return Vector2DDotProduct(Vector2DNormalize(base_), vec_); }
 
 //
-Vector2D Vector2DProj(const Vector2D& base, const Vector2D& vec)
-{ return Vector2DProjLength(base, vec) * Vector2DNormalize(base); }
+Vector2D Vector2DProj(const Vector2D& base_, const Vector2D& vec_)
+{ return Vector2DProjLength(base_, vec_) * Vector2DNormalize(base_); }
 
 //
-Vector2D Vector2DPerpProj(const Vector2D& base, const Vector2D& vec)
-{ return vec - Vector2DProj(base, vec); }
+Vector2D Vector2DPerpProj(const Vector2D& base_, const Vector2D& vec_)
+{ return vec_ - Vector2DProj(base_, vec_); }
 
 //
-Vector2D Vector2DFromRadians(float radians)
-{ return { cosf(radians),sinf(radians) }; }
+Vector2D Vector2DFromRadians(float radians_)
+{ return { cosf(radians_),sinf(radians_) }; }
 
 //
-Vector2D Vector2DFromDegrees(float degrees)
-{ return Vector2DFromRadians(static_cast<float>(degrees / 180.0f * M_PI)); }
+Vector2D Vector2DFromDegrees(float degrees_)
+{ return Vector2DFromRadians(static_cast<float>(degrees_ / 180.0f * M_PI)); }

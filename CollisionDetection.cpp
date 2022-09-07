@@ -3,30 +3,34 @@
 
 #include <corecrt_math.h> // sqrt()
 
-bool CDStatic_CirclePoint(const Circle circle, const Pt2 point)
+//
+bool CDStatic_CirclePoint(const Circle circle_, const Pt2 point_)
 {
-	return circle.m_radius > (circle.m_center - point).Length();
+	return circle_.radius > (circle_.center - point_).Length();
 }
 
-bool CDStatic_RectPoint(const Rect rect, const Pt2 point)
+//
+bool CDStatic_RectPoint(const Rect rect_, const Pt2 point_)
 {
-	AABB aabb(rect);
-	return aabb.m_min.x <= point.x && point.x <= aabb.m_max.x &&
-		aabb.m_min.y <= point.y && point.y <= aabb.m_max.y;
+	AABB aabb(rect_);
+	return aabb.min.x <= point_.x && point_.x <= aabb.max.x &&
+		aabb.min.y <= point_.y && point_.y <= aabb.max.y;
 }
 
-bool CDStatic_CircleCircle(const Circle circle1, const Circle circle2)
+//
+bool CDStatic_CircleCircle(const Circle circle_0_, const Circle circle_1_)
 {
-	const float combinedRadiusSq = (circle1.m_radius + circle2.m_radius) * (circle1.m_radius + circle2.m_radius);
-	const float distSq = Vector2DDotProduct(circle1.m_center - circle2.m_center, circle1.m_center - circle2.m_center);
-	return combinedRadiusSq > distSq;
+	const float combined_radius_sq = (circle_0_.radius + circle_1_.radius) * (circle_0_.radius + circle_1_.radius);
+	const float dist_sq = Vector2DDotProduct(circle_0_.center - circle_1_.center, circle_0_.center - circle_1_.center);
+	return combined_radius_sq > dist_sq;
 }
 
-bool CDStatic_RectRect_AABB(const Rect rect1, const Rect rect2)
+//
+bool CDStatic_RectRect_AABB(const Rect rect_0_, const Rect rect_1_)
 {
-	AABB aabb1(rect1); AABB aabb2(rect2);
-	if (aabb1.m_min.x >= aabb2.m_max.x || aabb2.m_min.x >= aabb1.m_max.x ||
-		aabb1.m_min.y >= aabb2.m_max.y || aabb2.m_min.y >= aabb1.m_max.y)
+	AABB aabb_0(rect_0_); AABB aabb_1(rect_1_);
+	if (aabb_0.min.x >= aabb_1.max.x || aabb_1.min.x >= aabb_0.max.x ||
+		aabb_0.min.y >= aabb_1.max.y || aabb_1.min.y >= aabb_0.max.y)
 	{
 		return false;
 	}
@@ -37,77 +41,81 @@ bool CDStatic_RectRect_AABB(const Rect rect1, const Rect rect2)
 }
 
 // SUSUSUSUSUSUSUSUS
-bool CDStatic_CircleRect(const Circle circle, const Rect rect)
+bool CDStatic_CircleRect(const Circle circle_, const Rect rect_)
 {
-	AABB aabb(rect);
-	Pt2 test = circle.m_center;
+	AABB aabb(rect_);
+	Pt2 test = circle_.center;
 
-	if (circle.m_center.x < aabb.m_min.x)
-		test.x = aabb.m_min.x;
-	else if (circle.m_center.x > aabb.m_max.x)
-		test.x = aabb.m_max.x;
+	if (circle_.center.x < aabb.min.x)
+		test.x = aabb.min.x;
+	else if (circle_.center.x > aabb.max.x)
+		test.x = aabb.max.x;
 
-	if (circle.m_center.y < aabb.m_min.y)
-		test.y = aabb.m_min.y;
-	else if (circle.m_center.y > aabb.m_max.y)
-		test.y = aabb.m_max.y;
+	if (circle_.center.y < aabb.min.y)
+		test.y = aabb.min.y;
+	else if (circle_.center.y > aabb.max.y)
+		test.y = aabb.max.y;
 
-	if (Vector2DDotProduct(circle.m_center - test, circle.m_center - test) <= circle.m_radius * circle.m_radius)
+	if (Vector2DDotProduct(circle_.center - test, circle_.center - test) <= circle_.radius * circle_.radius)
 		return true;
 	return false;
 }
 
-bool CDStatic_CircleRay(const Circle circle, const Ray ray, float& interTime)
+//
+bool CDStatic_CircleRay(const Circle circle_, const Ray ray_, float& inter_time_)
 {
-	Vec2 vNorm, BsC;
-	vNorm = Vector2DNormalize(ray.m_dir);
-	BsC = circle.m_center - ray.m_pt0;
-	float m = Vector2DDotProduct(vNorm, BsC);
+	Vec2 v_normalised, BsC;
+	v_normalised = Vector2DNormalize(ray_.dir);
+	BsC = circle_.center - ray_.pt;
+	float m = Vector2DDotProduct(v_normalised, BsC);
 
 	// rejection tests:
 
 	// m < 0 and Bs is outside circle
-	if (m < 0 && Vector2DDotProduct(BsC, BsC) > circle.m_radius * circle.m_radius) { return 0; }
+	if (m < 0 && Vector2DDotProduct(BsC, BsC) > circle_.radius * circle_.radius) { return 0; }
 
 	// n^2 = |BsC|^2 - m^2
 	float nSq = BsC.LengthSq() - m * m;
 	// n^2 > r^2
-	if (nSq > circle.m_radius * circle.m_radius) { return 0; }
+	if (nSq > circle_.radius * circle_.radius) { return 0; }
 
 	// s^2 = r^2 - n^2
-	float sSq = circle.m_radius * circle.m_radius - nSq;
+	float sSq = circle_.radius * circle_.radius - nSq;
 	// ti0 = (m-s)/|v|
-	interTime = (m - sqrtf(sSq)) / ray.m_dir.Length();
+	inter_time_ = (m - sqrtf(sSq)) / ray_.dir.Length();
 
-	return 0 <= interTime && interTime <= 1;
+	return 0 <= inter_time_ && inter_time_ <= 1;
 }
 
-bool CDDynamic_CirclePoint(const Circle circle, const Vec2 circleVel, const Pt2 point, const Vec2 pointVel)
+//
+bool CDDynamic_CirclePoint(const Circle circle_, const Vec2 circle_vel_, const Pt2 point_, const Vec2 point_vel_)
 {
 	return false;
 }
 
-bool CDDynamic_RectPoint(const Rect rect, const Vec2 rectVel, const Pt2 point, const Vec2 pointVel)
+//
+bool CDDynamic_RectPoint(const Rect rect_, const Vec2 rect_vel_, const Pt2 point_, const Vec2 point_vel_)
 {
 	return false;
 }
 
-bool CDDynamic_CircleCircle(const Circle circle1, const Vec2 circleVel1, const Circle circle2, const Vec2 circleVel2,
-	Pt2& interPtA, Pt2& interPtB, float& interTime)
+//
+bool CDDynamic_CircleCircle(const Circle circle_0_, const Vec2 circle_vel_0_, const Circle circle_1_, const Vec2 circle_vel_1_,
+	Pt2& inter_pt_A_, Pt2& inter_pt_B_, float& inter_time_)
 {
 	// make circle1 a Ray
 	Ray ray;
-	ray.m_pt0 = circle1.m_center;
-	ray.m_dir = circleVel1 - circleVel2; // relative velocity
+	ray.pt = circle_0_.center;
+	ray.dir = circle_vel_0_ - circle_vel_1_; // relative velocity
 
-	// make circle2 a bigger, stationary circle
-	Circle newCircle{ circle2 };
-	newCircle.m_radius += circle1.m_radius;
+	// make circle_1_ a bigger, stationary circle
+	Circle new_circle{ circle_1_ };
+	new_circle.radius += circle_0_.radius;
 
-	if (CDStatic_CircleRay(newCircle, ray, interTime))
+	if (CDStatic_CircleRay(new_circle, ray, inter_time_))
 	{
-		interPtA = circle1.m_center + interTime * circleVel1;
-		interPtB = circle2.m_center + interTime * circleVel2;
+		inter_pt_A_ = circle_0_.center + inter_time_ * circle_vel_0_;
+		inter_pt_B_ = circle_1_.center + inter_time_ * circle_vel_1_;
 
 		return true;
 	}

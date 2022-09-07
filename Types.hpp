@@ -8,38 +8,38 @@ struct AABB; // just a forward declaration
 
 struct LineSegment
 {
-	Pt2	m_pt0;
-	Pt2	m_pt1;
-	Vec2 m_normal;
-	LineSegment(Pt2 pos, float scale, float dir);	
+	Pt2	pt0;
+	Pt2	pt1;
+	Vec2 normal;
+	LineSegment(Pt2 pos_, float scale_, float dir_);	
 };
 
 struct Circle
 {
-	Pt2	m_center;
-	float m_radius;
-	float m_mass{ 1.0f };
+	Pt2	center;
+	float radius;
+	float mass{ 1.0f };
 };
 
 struct Ray
 {
-	Pt2 m_pt0;
-	Vec2 m_dir;
+	Pt2 pt;
+	Vec2 dir;
 };
 
 struct Rect
 {
-	Pt2 m_center;
-	float m_width;
-	float m_height;
-	Rect(const AABB aabb);
+	Pt2 center;
+	float width;
+	float height;
+	Rect(const AABB aabb_);
 };
 
 struct AABB
 {
-	Pt2 m_min;
-	Pt2 m_max;
-	AABB(const Rect rect);
+	Pt2 min;
+	Pt2 max;
+	AABB(const Rect rect_);
 };
 
 #endif // TYPES_HPP_
