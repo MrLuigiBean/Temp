@@ -25,11 +25,13 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #define EPSILON		0.0001f
 #define PI			3.14159265358f
 
-#define TEST_VEC2 1
-#define TEST_VEC3 1
-#define TEST_MTX33 1
-#define TEST_MTX44 1
+#define TEST_VEC2 0
+#define TEST_VEC3 0
+#define TEST_MTX33 0
+#define TEST_MTX44 0
 
+// these functions depend on the given type have the members 'm' and 'm2'
+#if 0
 //
 template <typename T>
 void PrintVector(char const* txt, T const& vec)
@@ -55,6 +57,32 @@ void PrintMatrix(char const* txt, T const& mtx)
 		printf("%s", i % sz != sz - 1 ? " " : " |\n");
 	}
 }
+#endif
+
+template <typename T>
+void PrintVector(char const* label, T const& vec)
+{
+	if (*label != '\0') { printf("%s:\n", label); }
+	for (size_t i{ 0 }, sz{ sizeof(T) / sizeof(float) }; i < sz; ++i)
+	{
+		printf("|% f", *(reinterpret_cast<float const*>(&vec) + i));
+		printf("%s", i != sz - 1 ? " " : " |\n");
+	}
+}
+
+// must be a square matrix!!!
+template <typename T>
+void PrintMatrix(char const* label, T const& mtx)
+{
+	// don't print if there's nothing to print
+	if (*label != '\0') { printf("%s:\n", label); }
+	for (size_t i{ 0 }, sz{ static_cast<size_t>(sqrt(sizeof(T) / sizeof(float))) };
+		i < sizeof(T) / sizeof(float); ++i)
+	{
+		printf("|% f", *(reinterpret_cast<float const*>(&mtx) + i));
+		printf("%s", i % sz != sz - 1 ? " " : " |\n");
+	}
+}
 
 //
 template <typename T>
@@ -62,7 +90,9 @@ float CompareMtx(const T& pSrc, const T& pDst)
 {
 	float d = 0.0f;
 	for (size_t i{ 0 }; i < std::size(pSrc.m); ++i)
-	{ d += fabsf(pSrc.m[i] - pDst.m[i]); }
+	{
+		d += fabsf(pSrc.m[i] - pDst.m[i]);
+	}
 	return d;
 }
 
@@ -72,14 +102,16 @@ float CompareVec(const T& pSrc, const T& pDst)
 {
 	float d = 0.0f;
 	for (size_t i{ 0 }; i < std::size(pSrc.m); ++i)
-	{ d += fabsf(pSrc.m[i] - pDst.m[i]); }
+	{
+		d += fabsf(pSrc.m[i] - pDst.m[i]);
+	}
 	return d;
 }
 
 //
 int Test2D()
 {
-#if TEST_VEC2
+	#if TEST_VEC2
 	// Testing Vector2D
 	//--------------------------------------------------------------------------
 	Vec2 v1, v2, v3, result;
@@ -211,9 +243,9 @@ int Test2D()
 	v2.x = 4.0f;	v2.y = -6.0f;
 	printf("Vec2CrossProductMag: \t%s\n",
 		(fabsf(Vector2DCrossProductMag(v1, v2) + 26.0f) < EPSILON) ? "Pass" : "Fail");
-#endif
+	#endif
 
-#if TEST_MTX33
+	#if TEST_MTX33
 	// Testing Matrix3x3
 	//--------------------------------------------------------------------------
 	Mtx33 id, m0, m1;
@@ -425,14 +457,14 @@ int Test2D()
 			(CompareMtx(mInv, m3) < EPSILON) ? "Pass" : "Fail");
 		quit = true;
 	}
-#endif
+	#endif
 	return 1;
 }
 
 //
 int Test3D()
 {
-#if TEST_VEC3
+	#if TEST_VEC3
 	// Testing Vector3D
 	//--------------------------------------------------------------------------
 	Vec3 v1, v2, v3, result;
@@ -564,9 +596,9 @@ int Test3D()
 	v2.x = 4.0f;	v2.y = -6.0f; v2.z = 0.0f;
 	printf("Vec3CrossProductMag: \t%s\n",
 		(fabsf(Vector3DCrossProductMag(v1, v2) - 26.0f) < EPSILON) ? "Pass" : "Fail");
-#endif
+	#endif
 
-#if TEST_MTX44
+	#if TEST_MTX44
 	// Testing Matrix4x4
 	//--------------------------------------------------------------------------
 	Mtx44 id, m0, m1;
@@ -800,7 +832,7 @@ int Test3D()
 			(CompareMtx(mInv, m3) < EPSILON) ? "Pass" : "Fail");
 		quit = true;
 	}
-#endif
+	#endif
 	return 1;
 }
 
@@ -834,7 +866,6 @@ int main()
 	inv = Mtx33Proj(e1_2D);
 	inv = Mtx33Shear(e1_2D);
 	PrintMatrix("", inv);
-
 
 	Test2D();
 	Test3D();
