@@ -1,17 +1,10 @@
-/******************************************************************************/
-/*!
-\file		Test Driver.cpp
-\author 	DigiPen
-\par    	email: digipen\@digipen.edu
-\date   	January 01, 20xx
-\brief
+// #include ""
+#include <cstdio>
+// #include "Extern/PhysX/include/PhysX/PxPhysicsAPI.h"
+#include "PxPhysicsAPI.h"
+#define OLD 0
 
-Copyright (C) 20xx DigiPen Institute of Technology.
-Reproduction or disclosure of this file or its contents without the
-prior written consent of DigiPen Institute of Technology is prohibited.
- */
- /******************************************************************************/
-
+#if OLD
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -836,9 +829,13 @@ int Test3D()
 	return 1;
 }
 
+#endif
+
+
 //
 int main()
 {
+#if 0
 	float input[] =
 	{
 		4, 5, 8,
@@ -870,4 +867,7 @@ int main()
 	Test2D();
 	Test3D();
 	return 0;
+#endif
+	printf("Hello World!");
+	physx::PxDefaultAllocator defaultAllocator;
 }
