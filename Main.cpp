@@ -1,9 +1,4 @@
-// #include ""
-#include <cstdio>
-// #include "Extern/PhysX/include/PhysX/PxPhysicsAPI.h"
-#include "PxPhysicsAPI.h"
 #define OLD 0
-
 #if OLD
 
 #include <stdio.h>
@@ -831,11 +826,14 @@ int Test3D()
 
 #endif
 
+#include "PxPhysicsAPI.h" // the beeeg include file containing all other physx includes
+#include <cstdio>
+using namespace physx;
 
 //
 int main()
 {
-#if 0
+	#if OLD
 	float input[] =
 	{
 		4, 5, 8,
@@ -867,7 +865,23 @@ int main()
 	Test2D();
 	Test3D();
 	return 0;
-#endif
-	printf("Hello World!");
-	physx::PxDefaultAllocator defaultAllocator;
+	#endif
+
+	printf("Hello PhysX!");
+	PxDefaultAllocator		gAllocator;
+	PxDefaultErrorCallback	gErrorCallback;
+	PxFoundation*			gFoundation = nullptr;
+	PxPhysics*				gPhysics = nullptr;
+	PxDefaultCpuDispatcher*	gDispatcher = nullptr;
+	PxScene*				gScene = nullptr;
+	PxMaterial*				gMaterial = nullptr;
+	PxPvd*					gPvd = nullptr;
+	PxReal 					stackZ = 10.0f;
+
+	// init physx
+
+	// init simulation
+
+	// run simulation
+
 }
