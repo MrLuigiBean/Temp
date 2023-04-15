@@ -1,3 +1,4 @@
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
 // are met:
@@ -22,15 +23,12 @@
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-// Copyright (c) 2008-2023 NVIDIA Corporation. All rights reserved.
+// Copyright (c) 2008-2021 NVIDIA Corporation. All rights reserved.
 // Copyright (c) 2004-2008 AGEIA Technologies, Inc. All rights reserved.
 // Copyright (c) 2001-2004 NovodeX AG. All rights reserved.  
 
-#ifndef PX_DEFAULT_ERROR_CALLBACK_H
-#define PX_DEFAULT_ERROR_CALLBACK_H
-/** \addtogroup extensions
-  @{
-*/
+#ifndef PX_PHYSICS_EXTENSIONS_DEFAULT_ERROR_CALLBACK_H
+#define PX_PHYSICS_EXTENSIONS_DEFAULT_ERROR_CALLBACK_H
 
 #include "foundation/PxErrorCallback.h"
 #include "PxPhysXConfig.h"
@@ -51,15 +49,12 @@ namespace physx
 	class PxDefaultErrorCallback : public PxErrorCallback
 	{
 	public:
-				PxDefaultErrorCallback() = default;
-		virtual	~PxDefaultErrorCallback() = default;
+		PxDefaultErrorCallback(){};
+		~PxDefaultErrorCallback(){};
 
-		virtual void reportError(PxErrorCode::Enum code, const char* message, const char* file, int line) PX_OVERRIDE
+		virtual void reportError(PxErrorCode::Enum code, const char* message, const char* file, int line)
 		{
-			printf("code was	: |%d|\n", code);
-			printf("message was	: |%s|\n", message);
-			printf("from file	: |%s|\n", file);
-			printf("at line		: |%d|\n", line);
+			printf("waloa error\n");
 		};
 	};
 
@@ -67,5 +62,4 @@ namespace physx
 } // namespace physx
 #endif
 
-/** @} */
 #endif
