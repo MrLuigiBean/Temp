@@ -827,8 +827,36 @@ int Test3D()
 #endif
 
 #include "PxPhysicsAPI.h" // the beeeg include file containing all other physx includes
-#include <cstdio>
+// #include <cstdio>
 using namespace physx;
+PxDefaultAllocator		gAllocator;
+PxDefaultErrorCallback	gErrorCallback;
+PxFoundation* gFoundation = nullptr;
+PxPhysics* gPhysics = nullptr;
+PxDefaultCpuDispatcher* gDispatcher = nullptr;
+PxScene* gScene = nullptr;
+PxMaterial* gMaterial = nullptr;
+PxPvd* gPvd = nullptr;
+PxReal 					stackZ = 10.0f;
+
+
+void createStack(const PxTransform& t, PxU32 size, PxReal halfExtent)
+{
+	PxShape* shape = gPhysics->createShape(PxBoxGeometry(halfExtent, halfExtent, halfExtent), *gMaterial);
+	for (PxU32 i = 0; i < size; i++)
+	{
+		for (PxU32 j = 0; j < size - i; j++)
+		{
+			PxTransform localTm(PxVec3(PxReal(j * 2) - PxReal(size - i), PxReal(i * 2 + 1), 0) * halfExtent);
+			PxRigidDynamic* body = gPhysics->createRigidDynamic(t.transform(localTm));
+			body->attachShape(*shape);
+			PxRigidBodyExt::updateMassAndInertia(*body, 10.0f);
+			gScene->addActor(*body);
+		}
+	}
+	shape->release();
+}
+
 
 //
 int main()
@@ -868,20 +896,50 @@ int main()
 	#endif
 
 	printf("Hello PhysX!");
-	PxDefaultAllocator		gAllocator;
-	PxDefaultErrorCallback	gErrorCallback;
-	PxFoundation*			gFoundation = nullptr;
-	PxPhysics*				gPhysics = nullptr;
-	PxDefaultCpuDispatcher*	gDispatcher = nullptr;
-	PxScene*				gScene = nullptr;
-	PxMaterial*				gMaterial = nullptr;
-	PxPvd*					gPvd = nullptr;
-	PxReal 					stackZ = 10.0f;
-
 	// init physx
+	gFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, gAllocator, gErrorCallback);
+	printf("%d\n", PX_PHYSICS_VERSION);
+	printf("%d\n", PX_PHYSICS_VERSION_MAJOR);
+	printf("%d\n", PX_PHYSICS_VERSION_MINOR);
+	printf("%d\n", PX_PHYSICS_VERSION_BUGFIX);
 
 	// init simulation
+	gPvd = PxCreatePvd(*gFoundation);
+	PxPvdTransport* transport = PxDefaultPvdSocketTransportCreate("127.0.0.1", 5425, 10);
+	gPvd->connect(*transport, PxPvdInstrumentationFlag::eALL);
 
+	gPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *gFoundation, PxTolerancesScale(), true, gPvd);
+
+	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
+	sceneDesc.gravity = PxVec3(0.0f, -9.81f, 0.0f);
+	gDispatcher = PxDefaultCpuDispatcherCreate(2);
+	sceneDesc.cpuDispatcher = gDispatcher;
+	sceneDesc.filterShader = PxDefaultSimulationFilterShader;
+	gScene = gPhysics->createScene(sceneDesc);
+
+	PxPvdSceneClient* pvdClient = gScene->getScenePvdClient();
+	if (pvdClient)
+	{
+		pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONSTRAINTS, true);
+		pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_CONTACTS, true);
+		pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_SCENEQUERIES, true);
+	}
+	gMaterial = gPhysics->createMaterial(0.5f, 0.5f, 0.6f);
+
+	PxRigidStatic* groundPlane = PxCreatePlane(*gPhysics, PxPlane(0, 1, 0, 0), *gMaterial);
+	gScene->addActor(*groundPlane);
+
+	for (PxU32 i = 0; i < 5; i++)
+	{
+		createStack(PxTransform(PxVec3(0, 0, stackZ -= 10.0f)), 10, 2.0f);
+	}
 	// run simulation
+	while (true)
+	{
+		gScene->simulate(1.0f / 60.0f);
+		gScene->fetchResults(true);
+		//THIS FINALLY WORKS YASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+		//Viewable in PVD !!!111!!!
+	}
 
 }
