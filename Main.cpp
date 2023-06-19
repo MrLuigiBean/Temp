@@ -50,7 +50,7 @@ void PrintMatrix(char const* txt, T const& mtx)
 template <typename T>
 void PrintVector(char const* label, T const& vec)
 {
-	if (*label != '\0') { printf("%s:\n", label); }
+	if (label && *label != '\0') { printf("%s:\n", label); }
 	for (size_t i{ 0 }, sz{ sizeof(T) / sizeof(float) }; i < sz; ++i)
 	{
 		printf("|% f", *(reinterpret_cast<float const*>(&vec) + i));
@@ -63,7 +63,7 @@ template <typename T>
 void PrintMatrix(char const* label, T const& mtx)
 {
 	// don't print if there's nothing to print
-	if (*label != '\0') { printf("%s:\n", label); }
+	if (label && *label != '\0') { printf("%s:\n", label); }
 	for (size_t i{ 0 }, sz{ static_cast<size_t>(sqrt(sizeof(T) / sizeof(float))) };
 		i < sizeof(T) / sizeof(float); ++i)
 	{
